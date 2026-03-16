@@ -1,0 +1,118 @@
+{
+  "app": {
+    "title": "棱镜测评",
+    "tagline": "探索你人格的光谱",
+    "description": "双语九型人格测评"
+  },
+  "nav": {
+    "home": "首页",
+    "quiz": "测评",
+    "results": "结果",
+    "history": "历史"
+  },
+  "buttons": {
+    "start": "开始",
+    "next": "下一题",
+    "back": "上一题",
+    "retake": "重新测评",
+    "exportPdf": "导出PDF",
+    "clearHistory": "清除历史",
+    "viewDetail": "查看详情",
+    "startQuiz": "开始测评"
+  },
+  "mode": {
+    "quick": "快速模式",
+    "full": "完整模式",
+    "quickDescription": "54道题 · 约8分钟 · 快速识别核心类型",
+    "fullDescription": "108道题 · 约15分钟 · 全面深度分析",
+    "selectMode": "选择你的测评模式"
+  },
+  "quiz": {
+    "questionProgress": "第 {current} 题，共 {total} 题",
+    "progress": "进度",
+    "selectAnswer": "请选择你的答案",
+    "likert1": "非常不同意",
+    "likert2": "不同意",
+    "likert3": "中立",
+    "likert4": "同意",
+    "likert5": "非常同意"
+  },
+  "results": {
+    "yourType": "你的类型",
+    "wing": "翼型",
+    "tritype": "三型组合",
+    "growth": "成长方向",
+    "stress": "压力方向",
+    "strengths": "优势特质",
+    "challenges": "成长挑战",
+    "scoreDistribution": "得分分布",
+    "primaryType": "主要类型",
+    "growthSuggestions": "成长建议",
+    "typeDescription": "类型描述",
+    "lowConfidence": "置信度偏低——你的最高分非常接近",
+    "flatProfile": "分布较平均——你的得分较为均匀分布"
+  },
+  "history": {
+    "title": "历史记录",
+    "noHistory": "暂无历史记录",
+    "takenOn": "测评时间",
+    "quickMode": "快速模式",
+    "fullMode": "完整模式"
+  },
+  "theme": {
+    "dark": "深色模式",
+    "light": "浅色模式",
+    "toggle": "切换主题"
+  },
+  "language": {
+    "en": "英文",
+    "zh": "中文",
+    "toggle": "切换语言"
+  },
+  "types": {
+    "1": {
+      "name": "改革者",
+      "tagline": "原则性强、目标明确、自律克制"
+    },
+    "2": {
+      "name": "助人者",
+      "tagline": "慷慨热情、善解人意、渴望认可"
+    },
+    "3": {
+      "name": "成就者",
+      "tagline": "适应力强、追求卓越、目标驱动"
+    },
+    "4": {
+      "name": "个人主义者",
+      "tagline": "富有表现力、情感深邃、渴望独特"
+    },
+    "5": {
+      "name": "调查者",
+      "tagline": "洞察力强、善于创新、注重私人空间"
+    },
+    "6": {
+      "name": "忠诚者",
+      "tagline": "投入负责、忠实可靠、容易焦虑"
+    },
+    "7": {
+      "name": "热情者",
+      "tagline": "自发活跃、多才多艺、追求满足"
+    },
+    "8": {
+      "name": "挑战者",
+      "tagline": "自信果断、勇于担当、直接对抗"
+    },
+    "9": {
+      "name": "和平者",
+      "tagline": "包容接纳、安抚人心、容易自我忽视"
+    }
+  },
+  "common": {
+    "loading": "加载中",
+    "error": "发生错误",
+    "close": "关闭",
+    "share": "分享",
+    "download": "下载",
+    "of": "共"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "app": {
+    "title": "TryPrism",
+    "tagline": "Discover the spectrum of your personality",
+    "description": "A bilingual Enneagram personality assessment"
+  },
+  "nav": {
+    "home": "Home",
+    "quiz": "Quiz",
+    "results": "Results",
+    "history": "History"
+  },
+  "buttons": {
+    "start": "Start",
+    "next": "Next",
+    "back": "Back",
+    "retake": "Retake",
+    "exportPdf": "Export PDF",
+    "clearHistory": "Clear History",
+    "viewDetail": "View Detail",
+    "startQuiz": "Start Quiz"
+  },
+  "mode": {
+    "quick": "Quick Mode",
+    "full": "Full Mode",
+    "quickDescription": "54 questions · about 8 minutes · core type identification",
+    "fullDescription": "108 questions · about 15 minutes · comprehensive analysis",
+    "selectMode": "Choose your assessment mode"
+  },
+  "quiz": {
+    "questionProgress": "Question {current} of {total}",
+    "progress": "Progress",
+    "selectAnswer": "Select your answer",
+    "likert1": "Strongly Disagree",
+    "likert2": "Disagree",
+    "likert3": "Neutral",
+    "likert4": "Agree",
+    "likert5": "Strongly Agree"
+  },
+  "results": {
+    "yourType": "Your Type",
+    "wing": "Wing",
+    "tritype": "Tritype",
+    "growth": "Growth Direction",
+    "stress": "Stress Direction",
+    "strengths": "Strengths",
+    "challenges": "Challenges",
+    "scoreDistribution": "Score Distribution",
+    "primaryType": "Primary Type",
+    "growthSuggestions": "Growth Suggestions",
+    "typeDescription": "Type Description",
+    "lowConfidence": "Low Confidence — your top scores are very close",
+    "flatProfile": "Flat Profile — your scores are broadly distributed"
+  },
+  "history": {
+    "title": "Your History",
+    "noHistory": "No previous results found",
+    "takenOn": "Taken on",
+    "quickMode": "Quick Mode",
+    "fullMode": "Full Mode"
+  },
+  "theme": {
+    "dark": "Dark Mode",
+    "light": "Light Mode",
+    "toggle": "Toggle Theme"
+  },
+  "language": {
+    "en": "English",
+    "zh": "Chinese",
+    "toggle": "Switch Language"
+  },
+  "types": {
+    "1": {
+      "name": "The Reformer",
+      "tagline": "Principled, purposeful, self-controlled"
+    },
+    "2": {
+      "name": "The Helper",
+      "tagline": "Generous, demonstrative, people-pleasing"
+    },
+    "3": {
+      "name": "The Achiever",
+      "tagline": "Adaptable, excelling, driven"
+    },
+    "4": {
+      "name": "The Individualist",
+      "tagline": "Expressive, dramatic, self-absorbed"
+    },
+    "5": {
+      "name": "The Investigator",
+      "tagline": "Perceptive, innovative, secretive"
+    },
+    "6": {
+      "name": "The Loyalist",
+      "tagline": "Engaging, responsible, anxious"
+    },
+    "7": {
+      "name": "The Enthusiast",
+      "tagline": "Spontaneous, versatile, acquisitive"
+    },
+    "8": {
+      "name": "The Challenger",
+      "tagline": "Self-confident, decisive, confrontational"
+    },
+    "9": {
+      "name": "The Peacemaker",
+      "tagline": "Receptive, reassuring, complacent"
+    }
+  },
+  "common": {
+    "loading": "Loading",
+    "error": "An error occurred",
+    "close": "Close",
+    "share": "Share",
+    "download": "Download",
+    "of": "of"
+  }
+}
