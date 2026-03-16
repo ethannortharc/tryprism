@@ -16,9 +16,9 @@ import { execFileSync } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-// Workspace root is four levels above this test file:
-// .ratchet/tryprism/test-suite/auto/ → ../../../.. = workspace root
-const WORKSPACE_ROOT = path.resolve(__dirname, '../../../../');
+// Workspace root is two levels above this test file:
+// tests/unit/ → ../.. = workspace root
+const WORKSPACE_ROOT = path.resolve(__dirname, '../../');
 const DIST_DIR = path.join(WORKSPACE_ROOT, 'dist');
 
 // ---------------------------------------------------------------------------
