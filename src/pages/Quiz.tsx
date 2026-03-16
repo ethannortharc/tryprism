@@ -71,8 +71,14 @@ export default function Quiz() {
         mode,
       };
       saveResult(stored);
+      // Also persist as the latest single result so Results page can load it
+      try {
+        localStorage.setItem('tryprism_latest_result', JSON.stringify(stored));
+      } catch {
+        // quota exceeded or unavailable — ignore
+      }
 
-      navigate('/results', { state: { result: stored } });
+      navigate('/results', { state: stored });
     }
   };
 

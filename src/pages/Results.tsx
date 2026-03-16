@@ -13,6 +13,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useI18n } from '../contexts/I18nContext';
 import { CENTERS } from '../lib/scoring';
+import { exportResultAsPdf } from '../lib/pdf';
 import RadarChart from '../components/RadarChart';
 import ArrowsDiagram from '../components/ArrowsDiagram';
 import TypeDescription from '../components/TypeDescription';
@@ -464,8 +465,7 @@ export default function Results() {
 
         <button
           data-testid="pdf-export-button"
-          disabled
-          title="PDF export coming soon"
+          onClick={() => exportResultAsPdf(result, locale)}
           style={{
             padding: 'var(--space-3) var(--space-8)',
             background: 'var(--accent-primary)',
@@ -474,7 +474,7 @@ export default function Results() {
             fontWeight: '600',
             fontSize: '1rem',
             border: 'none',
-            opacity: 0.7,
+            cursor: 'pointer',
           }}
         >
           {t('buttons.exportPdf')}

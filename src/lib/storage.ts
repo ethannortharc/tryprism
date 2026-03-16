@@ -13,6 +13,7 @@ export interface StoredResult extends ScoreResult {
   id: string;
   takenAt: string;       // ISO timestamp
   mode: 'quick' | 'full';
+  completedAt?: string;  // alternative timestamp field from external sources
 }
 
 const STORAGE_KEY = 'tryprism_results';
@@ -25,16 +26,34 @@ function readFromStorage(): StoredResult[] {
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    // Filter out entries that don't look like valid StoredResult objects
-    return parsed.filter((item): item is StoredResult => {
-      return (
-        item !== null &&
-        typeof item === 'object' &&
-        typeof (item as Record<string, unknown>).id === 'string' &&
-        typeof (item as Record<string, unknown>).takenAt === 'string' &&
-        typeof (item as Record<string, unknown>).primaryType === 'number'
-      );
-    });
+    // Accept any entry with at least a valid primaryType number; fill in missing fields.
+    return parsed
+      .filter((item): boolean => {
+        return (
+          item !== null &&
+          typeof item === 'object' &&
+          typeof (item as Record<string, unknown>).primaryType === 'number'
+        );
+      })
+      .map((item): StoredResult => {
+        const obj = item as Record<string, unknown>;
+        // Normalise to StoredResult, filling in missing fields gracefully
+        const takenAt =
+          typeof obj.takenAt === 'string' ? obj.takenAt :
+          typeof obj.completedAt === 'string' ? obj.completedAt :
+          new Date(0).toISOString();
+        return {
+          scores: (obj.scores ?? {}) as Record<number, number>,
+          primaryType: obj.primaryType as number,
+          wing: typeof obj.wing === 'number' ? obj.wing : 0,
+          lowConfidence: typeof obj.lowConfidence === 'boolean' ? obj.lowConfidence : false,
+          flatProfile: typeof obj.flatProfile === 'boolean' ? obj.flatProfile : false,
+          id: typeof obj.id === 'string' ? obj.id : `imported-${String(takenAt)}`,
+          takenAt,
+          mode: (obj.mode === 'quick' || obj.mode === 'full') ? obj.mode : 'quick',
+          completedAt: typeof obj.completedAt === 'string' ? obj.completedAt : undefined,
+        };
+      });
   } catch {
     // JSON parse error or localStorage unavailable — return empty
     return [];
@@ -56,10 +75,12 @@ export function saveResult(result: StoredResult): void {
 /** Returns all saved results, most recent first. Returns empty array on any error. */
 export function getResults(): StoredResult[] {
   const results = readFromStorage();
-  // Sort by takenAt descending (most recent first)
-  return results.slice().sort((a, b) =>
-    new Date(b.takenAt).getTime() - new Date(a.takenAt).getTime()
-  );
+  // Sort by takenAt descending (most recent first); fall back to completedAt
+  return results.slice().sort((a, b) => {
+    const tA = new Date(a.completedAt ?? a.takenAt).getTime();
+    const tB = new Date(b.completedAt ?? b.takenAt).getTime();
+    return tB - tA;
+  });
 }
 
 /** Clears all saved results from localStorage. */
