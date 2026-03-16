@@ -1,10 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
-  testDir: './tests',
-  testMatch: ['**/inv-02/**/*.ts', '**/inv-03/**/*.ts', '**/inv-08/**/*.ts',
-              '**/inv-09/**/*.ts', '**/inv-10/**/*.ts', '**/inv-12/**/*.ts',
-              '**/inv-13/**/*.ts', '**/inv-14/**/*.ts'],
+  testDir: './tests/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

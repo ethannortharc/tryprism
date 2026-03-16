@@ -1,0 +1,173 @@
+generated: "2026-03-16T00:00:00Z"
+spec_version: 1
+project_type: web_app
+test_runner:
+  unit: vitest
+  integration: playwright
+  accessibility: "@axe-core/playwright"
+entries:
+  - constraint_id: INV-01
+    type: auto
+    file: auto/INV-01.test.ts
+    runner: vitest
+    levels: [static, unit]
+    status: generated
+    notes: "Level 1: tsc --noEmit + build output checks. Level 2: dynamic import smoke tests."
+
+  - constraint_id: INV-02
+    type: auto
+    file: auto/INV-02.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: home page elements, language toggle functional, theme toggle present, no console errors."
+
+  - constraint_id: INV-03
+    type: auto
+    file: auto/INV-03.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: question display, Likert options, progress bar advances, back/next navigation, no console errors."
+
+  - constraint_id: INV-04
+    type: auto
+    file: auto/INV-04.test.ts
+    runner: vitest
+    levels: [unit]
+    status: generated
+    notes: "Unit test: exactly 54 questions, 6 per type, no duplicates, bilingual completeness."
+
+  - constraint_id: INV-05
+    type: auto
+    file: auto/INV-05.test.ts
+    runner: vitest
+    levels: [unit]
+    status: generated
+    notes: "Unit test: exactly 108 questions, 12 per type, quick mode is strict subset, no duplicates, bilingual completeness."
+
+  - constraint_id: INV-06
+    type: auto
+    file: auto/INV-06.test.ts
+    runner: vitest
+    levels: [unit]
+    status: generated
+    notes: "Unit test: perfect-score scenarios, all 9 types identifiable, weighted scores, normalization, boundaries, tie/flat detection."
+
+  - constraint_id: INV-07
+    type: auto
+    file: auto/INV-07.test.ts
+    runner: vitest
+    levels: [unit]
+    status: generated
+    notes: "Unit test: wing always adjacent (map 1→{9,2} through 9→{8,1}), non-adjacent constraint enforced, equal-adjacent tie handled."
+
+  - constraint_id: INV-08
+    type: auto
+    file: auto/INV-08.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: results page via localStorage injection — type number/name, wing, 9-score chart, growth/stress arrows, tritype, description text."
+
+  - constraint_id: INV-09
+    type: auto
+    file: auto/INV-09.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: PDF button present, download event triggered, magic bytes %PDF- verified, file size >1KB, content completeness checked."
+
+  - constraint_id: INV-10
+    type: auto
+    file: auto/INV-10.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: language toggle changes heading/button text on home/quiz/results pages, toggle back restores original language."
+
+  - constraint_id: INV-11
+    type: auto
+    file: auto/INV-11.test.ts
+    runner: vitest
+    levels: [unit]
+    status: generated
+    notes: "Unit test: en/zh locale key parity (bidirectional), no empty strings, Chinese chars present, question bank bilingual check."
+
+  - constraint_id: INV-12
+    type: auto
+    file: auto/INV-12.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: dark mode default, toggle changes background/CSS class, light mode persists after reload, dark mode also persists."
+
+  - constraint_id: INV-13
+    type: auto
+    file: auto/INV-13.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: three viewports (375x812, 768x1024, 1440x900) × three pages (home, quiz, results) — no overflow, elements visible, font readable."
+
+  - constraint_id: INV-14
+    type: auto
+    file: auto/INV-14.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    notes: "Browser test: localStorage populated after quiz, persists after reload, cleared when localStorage cleared, corrupted data handled gracefully, history page."
+
+  - constraint_id: QD-01
+    type: human
+    file: human/QD-01.checklist.md
+    runner: human
+    levels: [manual]
+    status: generated
+    threshold: 4
+    notes: "Human review: desktop + mobile visual design, premium dark aesthetic, typography, whitespace, animations, anti-pattern verification."
+
+  - constraint_id: QD-02
+    type: ai_review
+    file: ai-review/QD-02.review.md
+    runner: ai_review
+    levels: [ai_review]
+    status: generated
+    threshold: 4
+    notes: "AI review: accuracy vs. established Enneagram theory, empathetic tone, actionable growth suggestions, completeness, length 200-400 words per type."
+
+  - constraint_id: QD-03
+    type: ai_review
+    file: ai-review/QD-03.review.md
+    runner: ai_review
+    levels: [ai_review]
+    status: generated
+    threshold: 4
+    notes: "AI review: natural Chinese phrasing, culturally adapted (not literal translation), correct psychology vocabulary, question psychological equivalence."
+
+  - constraint_id: QD-04
+    type: ai_review
+    file: ai-review/QD-04.review.md
+    runner: ai_review
+    levels: [ai_review]
+    status: generated
+    threshold: 4
+    notes: "AI review: PDF layout/hierarchy, content completeness (9 required sections), score visualization, bilingual support, shareability."
+
+  - constraint_id: QD-05
+    type: auto
+    file: auto/QD-05.spec.ts
+    runner: playwright
+    levels: [integration]
+    status: generated
+    threshold: 3
+    notes: "Axe-core scan on home/quiz/results pages: zero critical/serious WCAG 2.1 AA violations, color contrast, keyboard navigation, semantic HTML."
+
+  - constraint_id: QD-06
+    type: ai_review
+    file: ai-review/QD-06.review.md
+    runner: ai_review
+    levels: [ai_review]
+    status: generated
+    threshold: 4
+    notes: "AI review: motivation targeting (WHY not WHAT), social desirability bias (<15%), cultural sensitivity, facet diversity per type."

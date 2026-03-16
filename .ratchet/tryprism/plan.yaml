@@ -1,0 +1,464 @@
+plan:
+  project: tryprism
+  intent_id: tryprism
+  workspace: /Users/coder/Projects/northarc/tryprism
+  created: 2026-03-16
+  strategy: parallel
+
+# Execution flow:
+#
+#   WP-01 (scoring engine)
+#     ↓
+#   WP-02 (questions + i18n)
+#     ↓
+#   WP-03 (app shell + home + theme)
+#     ↓
+#   WP-04 (quiz page)  ──┐
+#   WP-05 (results page) ┤ parallel group D
+#     ↓                   │
+#   WP-06 (PDF + history) ┘
+#     ↓
+#   WP-07 (responsive + a11y)  ──┐ parallel group F
+#   WP-08 (content quality)      ┘
+#
+
+work_packages:
+  - id: wp-01
+    name: "Scoring engine + data types"
+    description: |
+      Build the core scoring algorithm and TypeScript types.
+      - Define Enneagram types, Answer, ScoreResult interfaces
+      - Implement weighted Likert scoring (each question contributes to 1-2 types)
+      - Implement wing calculation (adjacent types only)
+      - Implement tritype detection (dominant type per center: Gut 8/9/1, Heart 2/3/4, Head 5/6/7)
+      - Implement confidence detection (lowConfidence when top scores within 10%)
+      - Implement flat profile detection
+      - Score normalization to percentage distribution (sum to 100)
+      - Growth arrows: 1→7, 2→4, 3→6, 4→1, 5→8, 6→9, 7→5, 8→2, 9→3
+      - Stress arrows: 1→4, 2→8, 3→9, 4→2, 5→7, 6→3, 7→1, 8→5, 9→6
+    depends_on: []
+    parallel_group: "A"
+    inputs: []
+    outputs:
+      - src/lib/scoring.ts
+      - src/types/index.ts
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/unit/INV-06.test.ts
+      - tests/unit/INV-07.test.ts
+    ratchet:
+      budget: 6
+      composite_weights:
+        auto_pass_rate: 0.9
+        ai_review_avg: 0.1
+    acceptance:
+      - id: INV-06
+        track: agent
+        verifier: auto
+        check: "npx vitest run tests/unit/INV-06.test.ts"
+        test_file: tests/unit/INV-06.test.ts
+        ratchet_metric: "scoring_tests_passed / scoring_tests_total"
+      - id: INV-07
+        track: agent
+        verifier: auto
+        check: "npx vitest run tests/unit/INV-07.test.ts"
+        test_file: tests/unit/INV-07.test.ts
+        ratchet_metric: "wing_tests_passed / wing_tests_total"
+    status: pending
+
+  - id: wp-02
+    name: "Question bank + i18n system + locale files"
+    description: |
+      Create the full question bank and internationalization infrastructure.
+      - Define question data model with bilingual text, type mapping, weights
+      - Write 54 quick-mode questions (6 per type) targeting core motivations
+      - Write 108 full-mode questions (12 per type), quick mode as subset
+      - Questions must probe motivations/fears, not surface behaviors
+      - Both Chinese and English must be psychologically equivalent (not literal translations)
+      - Avoid Western-centric idioms and culturally biased scenarios
+      - Create i18n system with locale switching
+      - Create en.json and zh.json locale files for all UI strings
+      - Ensure bidirectional key parity (every en key exists in zh and vice versa)
+    depends_on: [wp-01]
+    parallel_group: "B"
+    inputs:
+      - src/types/index.ts
+    outputs:
+      - src/data/questions.ts
+      - src/lib/i18n.ts
+      - src/locales/en.json
+      - src/locales/zh.json
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/unit/INV-04.test.ts
+      - tests/unit/INV-05.test.ts
+      - tests/unit/INV-11.test.ts
+    ratchet:
+      budget: 8
+      composite_weights:
+        auto_pass_rate: 0.7
+        ai_review_avg: 0.3
+    acceptance:
+      - id: INV-04
+        track: agent
+        verifier: auto
+        check: "npx vitest run tests/unit/INV-04.test.ts"
+        test_file: tests/unit/INV-04.test.ts
+        ratchet_metric: "questions_valid / 54"
+      - id: INV-05
+        track: agent
+        verifier: auto
+        check: "npx vitest run tests/unit/INV-05.test.ts"
+        test_file: tests/unit/INV-05.test.ts
+        ratchet_metric: "questions_valid / 108"
+      - id: INV-11
+        track: agent
+        verifier: auto
+        check: "npx vitest run tests/unit/INV-11.test.ts"
+        test_file: tests/unit/INV-11.test.ts
+        ratchet_metric: "matched_keys / total_keys"
+    status: pending
+
+  - id: wp-03
+    name: "App shell + Home page + Theme system + Storage"
+    description: |
+      Build the application foundation and home page.
+      - Set up React Router for page navigation (home, quiz, results, history)
+      - Implement dark/light theme system with CSS custom properties
+        - Dark mode default (#0a0a0f to #1a1a2e backgrounds)
+        - Prismatic accent colors — each Enneagram type gets a unique spectrum color
+        - Theme persists in localStorage
+      - Build the Home page:
+        - App logo/title (TryPrism branding)
+        - Tagline/description
+        - Quick mode card and Full mode card
+        - Language toggle (zh/en)
+        - Theme toggle (dark/light)
+      - Implement localStorage persistence layer for test results
+      - Set up global styles: typography, spacing, animations
+      - Premium calm aesthetic — generous whitespace, refined typography
+      - Ensure the build passes (npm run build) with zero errors
+    depends_on: [wp-02]
+    parallel_group: "C"
+    inputs:
+      - src/lib/i18n.ts
+      - src/locales/en.json
+      - src/locales/zh.json
+    outputs:
+      - src/App.tsx
+      - src/pages/Home.tsx
+      - src/lib/theme.ts
+      - src/lib/storage.ts
+      - src/styles/
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/unit/INV-01.test.ts
+      - tests/e2e/INV-02.spec.ts
+      - tests/e2e/INV-12.spec.ts
+    ratchet:
+      budget: 8
+      composite_weights:
+        auto_pass_rate: 0.8
+        ai_review_avg: 0.2
+    acceptance:
+      - id: INV-01
+        track: agent
+        verifier: auto
+        check: "npx vitest run tests/unit/INV-01.test.ts"
+        test_file: tests/unit/INV-01.test.ts
+        ratchet_metric: "build_errors + type_errors (0 = pass)"
+      - id: INV-02
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-02.spec.ts"
+        test_file: tests/e2e/INV-02.spec.ts
+        ratchet_metric: "elements_found / elements_expected"
+      - id: INV-12
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-12.spec.ts"
+        test_file: tests/e2e/INV-12.spec.ts
+        ratchet_metric: "theme_checks_passed / theme_checks_total"
+    status: pending
+
+  - id: wp-04
+    name: "Quiz page"
+    description: |
+      Build the quiz flow — the core interactive experience.
+      - Question display with bilingual text (uses current language)
+      - Likert scale options (5-point: strongly disagree to strongly agree)
+      - Interactive option selection with visual feedback
+      - Progress bar showing current position (e.g., "12 / 54")
+      - Next button to advance to the next question
+      - Back button to return to the previous question (preserving answers)
+      - Answer state management across all questions
+      - Quiz completion detection → navigate to results
+      - Mode-aware: quick mode shows 54 questions, full mode shows 108
+      - Smooth transitions between questions
+      - Mobile-friendly touch targets
+    depends_on: [wp-01, wp-02, wp-03]
+    parallel_group: "D"
+    inputs:
+      - src/lib/scoring.ts
+      - src/data/questions.ts
+      - src/lib/i18n.ts
+      - src/App.tsx
+    outputs:
+      - src/pages/Quiz.tsx
+      - src/components/Question.tsx
+      - src/components/ProgressBar.tsx
+      - src/components/LikertScale.tsx
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/e2e/INV-03.spec.ts
+    ratchet:
+      budget: 8
+      composite_weights:
+        auto_pass_rate: 0.8
+        ai_review_avg: 0.2
+    acceptance:
+      - id: INV-03
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-03.spec.ts"
+        test_file: tests/e2e/INV-03.spec.ts
+        ratchet_metric: "navigation_checks_passed / total_checks"
+    status: pending
+
+  - id: wp-05
+    name: "Results page + data visualization"
+    description: |
+      Build the comprehensive results display — the showcase of the app.
+      - Primary type hero section (type number, name, brief tagline)
+      - Wing indicator (e.g., "4w5")
+      - 9-type radar/spider chart showing score distribution (SVG or Canvas)
+      - Detailed type description (200-400 words, bilingual)
+      - Growth arrow visualization (integration direction)
+      - Stress arrow visualization (disintegration direction)
+      - Tritype section (dominant type per center)
+      - Strengths and challenges section
+      - Growth suggestions
+      - Confidence indicator (if lowConfidence, show top candidates)
+      - Each type uses its unique prismatic accent color
+      - Results are passed via app state or localStorage injection
+      - Retake button to start over
+    depends_on: [wp-01, wp-03]
+    parallel_group: "D"
+    inputs:
+      - src/lib/scoring.ts
+      - src/types/index.ts
+      - src/lib/i18n.ts
+    outputs:
+      - src/pages/Results.tsx
+      - src/components/RadarChart.tsx
+      - src/components/TypeDescription.tsx
+      - src/components/ArrowsDiagram.tsx
+      - src/data/typeDescriptions.ts
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/e2e/INV-08.spec.ts
+    ratchet:
+      budget: 8
+      composite_weights:
+        auto_pass_rate: 0.7
+        ai_review_avg: 0.3
+    acceptance:
+      - id: INV-08
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-08.spec.ts"
+        test_file: tests/e2e/INV-08.spec.ts
+        ratchet_metric: "result_sections_found / result_sections_expected"
+    status: pending
+
+  - id: wp-06
+    name: "PDF export + History page + localStorage integration"
+    description: |
+      Complete the feature set — PDF sharing and result history.
+      PDF export:
+      - Client-side PDF generation (choose jsPDF, pdf-lib, or @react-pdf/renderer)
+      - Include: primary type, wing, all 9 scores, description, growth/stress info
+      - Professional report-quality layout
+      - Generated in user's selected language
+      - Download button on results page
+      History page:
+      - List of previous test results from localStorage
+      - Each entry shows date, primary type, mode (quick/full)
+      - Click to view full results
+      - Clear history button
+      localStorage integration:
+      - Save results with timestamp after each test completion
+      - Handle corrupted data gracefully
+      - Restore results on page revisit
+    depends_on: [wp-04, wp-05]
+    parallel_group: "E"
+    inputs:
+      - src/pages/Results.tsx
+      - src/lib/storage.ts
+      - src/lib/scoring.ts
+    outputs:
+      - src/lib/pdf.ts
+      - src/pages/History.tsx
+      - src/components/HistoryCard.tsx
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/e2e/INV-09.spec.ts
+      - tests/e2e/INV-14.spec.ts
+    ratchet:
+      budget: 8
+      composite_weights:
+        auto_pass_rate: 0.7
+        ai_review_avg: 0.3
+    acceptance:
+      - id: INV-09
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-09.spec.ts"
+        test_file: tests/e2e/INV-09.spec.ts
+        ratchet_metric: "pdf_checks_passed / pdf_checks_total"
+      - id: INV-14
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-14.spec.ts"
+        test_file: tests/e2e/INV-14.spec.ts
+        ratchet_metric: "persistence_checks_passed / persistence_checks_total"
+    status: pending
+
+  - id: wp-07
+    name: "Language integration + Responsive layout + Accessibility"
+    description: |
+      Integration and polish pass across all pages.
+      Language toggle integration:
+      - Verify language toggle switches ALL text on ALL pages (home, quiz, results, history)
+      - No untranslated strings remain after toggle
+      - Toggle back restores original language completely
+      Responsive layout:
+      - Test and fix at 375x812 (mobile), 768x1024 (tablet), 1440x900 (desktop)
+      - No horizontal overflow on any page
+      - Touch targets >= 44px on mobile
+      - Readable font sizes (>= 12px)
+      Accessibility:
+      - Run axe-core, fix all critical/serious WCAG 2.1 AA violations
+      - Color contrast 4.5:1 for text
+      - Keyboard Tab navigation through all interactive elements
+      - Semantic HTML: single h1, main landmark, form labels, heading hierarchy
+      - ARIA labels where needed
+    depends_on: [wp-04, wp-05, wp-06]
+    parallel_group: "F"
+    inputs:
+      - src/pages/Home.tsx
+      - src/pages/Quiz.tsx
+      - src/pages/Results.tsx
+      - src/pages/History.tsx
+    outputs:
+      - (modifications to existing files)
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - tests/e2e/INV-10.spec.ts
+      - tests/e2e/INV-13.spec.ts
+      - tests/e2e/QD-05.spec.ts
+    ratchet:
+      budget: 8
+      composite_weights:
+        auto_pass_rate: 0.8
+        ai_review_avg: 0.2
+    acceptance:
+      - id: INV-10
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-10.spec.ts"
+        test_file: tests/e2e/INV-10.spec.ts
+        ratchet_metric: "pages_fully_translated / total_pages"
+      - id: INV-13
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/INV-13.spec.ts"
+        test_file: tests/e2e/INV-13.spec.ts
+        ratchet_metric: "viewport_tests_passed / viewport_tests_total"
+      - id: QD-05
+        track: agent
+        verifier: auto
+        check: "npx playwright test tests/e2e/QD-05.spec.ts"
+        test_file: tests/e2e/QD-05.spec.ts
+        ratchet_metric: "1 - (violations / total_elements)"
+    status: pending
+
+  - id: wp-08
+    name: "Content quality — Type descriptions + Question review"
+    description: |
+      Ensure high-quality Enneagram content and bilingual quality.
+      Type descriptions (all 9 types):
+      - Each 200-400 words
+      - Cover: core motivation, core fear, core desire, strengths, challenges, growth path
+      - Empathetic, non-judgmental tone
+      - Include concrete growth suggestions
+      - Match established Enneagram definitions
+      Chinese translation quality:
+      - All Chinese text reads naturally (not robotic translation)
+      - Culturally adapted concepts (not literal translation)
+      - Uses accepted Chinese psychology terminology (九型人格, 核心恐惧, etc.)
+      Question quality:
+      - Questions target motivations/fears, not surface behaviors
+      - Balanced positive/negative framing
+      - Minimal social desirability bias
+      - Culturally sensitive for both Chinese and English audiences
+      PDF quality:
+      - Professional report layout
+      - All sections present and well-formatted
+    depends_on: [wp-05, wp-06]
+    parallel_group: "F"
+    inputs:
+      - src/data/typeDescriptions.ts
+      - src/data/questions.ts
+      - src/lib/pdf.ts
+    outputs:
+      - (improvements to existing content files)
+    executor: claude-code
+    workspace: /Users/coder/Projects/northarc/tryprism
+    test_files:
+      - .ratchet/tryprism/test-suite/ai-review/QD-02.review.md
+      - .ratchet/tryprism/test-suite/ai-review/QD-03.review.md
+      - .ratchet/tryprism/test-suite/ai-review/QD-04.review.md
+      - .ratchet/tryprism/test-suite/ai-review/QD-06.review.md
+    ratchet:
+      budget: 6
+      composite_weights:
+        auto_pass_rate: 0.2
+        ai_review_avg: 0.8
+    acceptance:
+      - id: QD-02
+        track: agent
+        verifier: ai_review
+        check: "ai_review against QD-02.review.md rubric"
+        test_file: .ratchet/tryprism/test-suite/ai-review/QD-02.review.md
+        ratchet_metric: "ai_review_score (1-5)"
+      - id: QD-03
+        track: agent
+        verifier: ai_review
+        check: "ai_review against QD-03.review.md rubric"
+        test_file: .ratchet/tryprism/test-suite/ai-review/QD-03.review.md
+        ratchet_metric: "ai_review_score (1-5)"
+      - id: QD-04
+        track: agent
+        verifier: ai_review
+        check: "ai_review against QD-04.review.md rubric"
+        test_file: .ratchet/tryprism/test-suite/ai-review/QD-04.review.md
+        ratchet_metric: "ai_review_score (1-5)"
+      - id: QD-06
+        track: agent
+        verifier: ai_review
+        check: "ai_review against QD-06.review.md rubric"
+        test_file: .ratchet/tryprism/test-suite/ai-review/QD-06.review.md
+        ratchet_metric: "ai_review_score (1-5)"
+    status: pending
+
+# Human review queue (non-blocking):
+#   QD-01: Visual design quality — queued after WP-07 completes
+#   Checklist: .ratchet/tryprism/test-suite/human/QD-01.checklist.md
