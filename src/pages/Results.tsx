@@ -17,6 +17,7 @@ import { exportResultAsPdf } from '../lib/pdf';
 import RadarChart from '../components/RadarChart';
 import ArrowsDiagram from '../components/ArrowsDiagram';
 import TypeDescription from '../components/TypeDescription';
+import HeaderControls from '../components/HeaderControls';
 
 interface ResultData {
   scores: Record<number, number>;
@@ -166,6 +167,7 @@ export default function Results() {
         gap: 'var(--space-8)',
       }}
     >
+      <HeaderControls />
       {/* ── Primary type hero ── */}
       <section
         data-testid="primary-type"

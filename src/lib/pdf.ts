@@ -39,6 +39,108 @@ const TYPE_NAMES_ZH: Record<number, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Per-type strengths and growth suggestions (bilingual)
+// ---------------------------------------------------------------------------
+
+interface TypeExtras {
+  strengths: { en: string[]; zh: string[] };
+  growthSuggestions: { en: string[]; zh: string[] };
+}
+
+const TYPE_EXTRAS: Record<number, TypeExtras> = {
+  1: {
+    strengths: {
+      en: ['Reliability and follow-through', 'Ethical clarity and principled action', 'Attention to detail and quality', 'Genuine commitment to improvement'],
+      zh: ['可靠、言出必行', '伦理清晰、原则坚定', '细心认真、追求品质', '真诚投入、持续改善'],
+    },
+    growthSuggestions: {
+      en: ['Schedule unstructured free time each week — let yourself rest without earning it', 'Practice saying "good enough" and mean it', 'Notice moments where your effort already made a difference — before adding a "but"', 'When your inner critic speaks, ask: "Is this helping, or just criticizing?"'],
+      zh: ['每周安排一段不设任何目标的自由时间，允许自己真正放松', '练习说"这已经足够好了"，并真心相信这句话', '在追加一个"但是"之前，先完整地看见自己努力已经带来的改变', '当内心的批评声响起时，问自己："这是在帮助我，还是只是在挑剔？"'],
+    },
+  },
+  2: {
+    strengths: {
+      en: ['Deep empathy and emotional attunement', 'Natural warmth that creates belonging', 'Intuitive sense of what others need', 'Wholehearted care and generosity'],
+      zh: ['深度共情与情感敏锐', '与生俱来的温暖，能营造归属感', '直觉性地感知他人的需求', '全心全意的关怀与慷慨付出'],
+    },
+    growthSuggestions: {
+      en: ['Schedule time for activities that are purely for you — not about serving others', 'Practice asking for help instead of only offering it', 'Notice when you are giving freely versus giving to receive approval', 'Learn to name your own needs clearly and voice them to someone you trust'],
+      zh: ['为自己安排纯粹属于自己的时间，而非为了服务他人', '练习主动开口寻求帮助，而不只是提供帮助', '留意自己是在出于爱自由给予，还是出于渴望认可而付出', '学会清晰地认识并说出自己的需求，向信任的人表达'],
+    },
+  },
+  3: {
+    strengths: {
+      en: ['Drive, competence, and the ability to deliver results', 'Inspiring leadership that raises the bar for everyone', 'Adaptability — reading situations and responding effectively', 'Capacity to create momentum and get things done'],
+      zh: ['强大的驱动力、能力与执行力', '鼓舞人心的领导力，能拉高整体水准', '适应力强，善于感知情境并有效回应', '制造动力、推动事成的天赋'],
+    },
+    growthSuggestions: {
+      en: ['Spend time in relationships where nothing needs to be produced or performed', 'Journal about feelings rather than plans — let what is true surface', 'Practice sharing a doubt or struggle with someone you trust (vulnerability builds connection)', 'Pause before starting a new goal: ask yourself what you genuinely feel, not what you should feel'],
+      zh: ['在一些不需要产出任何成果的关系中花时间相处', '用日记记录感受，而非计划——让真实的情绪浮现', '练习向信任的人分享一个疑虑或困境（脆弱能建立真实的连结）', '在开始下一个目标之前先停下来，问自己真正的感受是什么，而非应该有什么感受'],
+    },
+  },
+  4: {
+    strengths: {
+      en: ['Emotional depth and richness of inner life', 'Originality and authentic creative expression', 'Empathy for those who feel misunderstood or marginalized', 'Ability to transform personal experience into art, insight, or meaning'],
+      zh: ['情感深度与丰盈的内心世界', '独创性与真实的创意表达', '对感到被误解或边缘化之人的深切共情', '将个人经历转化为艺术、洞见或意义的能力'],
+    },
+    growthSuggestions: {
+      en: ['Establish a daily routine and follow it even when you don\'t feel inspired — action creates momentum', 'Share creative work before it feels "ready" — perfectionism can be a way of hiding', 'Notice what is beautiful and sufficient in your present life, not only what is missing', 'When melancholy arises, acknowledge it briefly, then take one small action anyway'],
+      zh: ['建立日常规律并坚持执行，即便没有灵感——行动本身会创造动力', '在作品感觉"就绪"之前就分享出去——追求完美有时是一种自我保护', '留意当下生活中已有的美好与充足，而不只是聚焦于缺失', '当忧郁升起时，短暂地承认它，然后无论如何还是采取一个小小的行动'],
+    },
+  },
+  5: {
+    strengths: {
+      en: ['Intellectual depth and genuine mastery', 'Calm, analytical presence in complex or chaotic situations', 'Independent thinking that generates original insights', 'Focus and the ability to synthesize complex information'],
+      zh: ['深厚的智识积累与真正的精通', '在复杂或混乱情况下的沉着与分析力', '独立思考，能产生原创性的洞见', '专注力与整合复杂信息的能力'],
+    },
+    growthSuggestions: {
+      en: ['Make commitments before you feel fully prepared — readiness comes through action, not just preparation', 'Share knowledge in real-time conversation rather than only after you have fully processed it', 'Allow yourself to be moved by experiences, not only to analyze them', 'Notice when withdrawal is self-care versus when it is avoidance — and choose engagement intentionally'],
+      zh: ['在感到完全准备好之前就做出承诺——准备好的感觉来自行动，而非无限的准备', '在实时对话中分享知识，而不只是在完全消化之后才开口', '允许自己被体验所触动，而不只是分析它', '留意什么时候独处是自我关怀，什么时候是在逃避——有意识地选择参与'],
+    },
+  },
+  6: {
+    strengths: {
+      en: ['Deep loyalty and commitment to people and principles', 'Strategic thinking and ability to anticipate problems', 'Courage under pressure — showing up when it matters most', 'Genuine investment in community and shared purpose'],
+      zh: ['对人和原则的深度忠诚与投入', '战略性思维与预判问题的能力', '压力下的勇气——在最关键的时刻挺身而出', '对群体与共同目标的真诚投入'],
+    },
+    growthSuggestions: {
+      en: ['When anxiety spikes, try a grounding practice: slow breathing, naming five things you can see', 'List evidence for what is actually working well — counterbalance catastrophic thinking with data', 'Take small courageous actions to build confidence in your own judgment', 'Practice noticing when you trust yourself — and let that record grow'],
+      zh: ['焦虑袭来时，尝试接地练习：缓慢呼吸，说出你能看见的五样事物', '列举实际运转良好的事物——用事实平衡灾难性的思维', '采取小而勇敢的行动，逐步建立对自己判断的信心', '留意自己信任自己的时刻——让这些记录慢慢积累'],
+    },
+  },
+  7: {
+    strengths: {
+      en: ['Contagious enthusiasm and genuine joy in living', 'Versatility and ability to synthesize ideas across domains', 'Optimism that opens new possibilities for everyone', 'Generativity — bringing creative energy to any challenge'],
+      zh: ['充满感染力的热情与对生命真实的喜悦', '多才多艺，能跨领域综合想法', '开启新可能性的乐观态度', '创造力——为任何挑战注入活力'],
+    },
+    growthSuggestions: {
+      en: ['Commit to one project until completion before starting the next — depth rewards differently than breadth', 'Practice sitting with discomfort without immediately reframing or escaping it', 'Allow grief or sadness a short, deliberate space each day — emotions that are felt can be released', 'Ask: "What am I avoiding by keeping so busy?" — and sit with the answer honestly'],
+      zh: ['在开始下一个项目之前，先将一个项目做到完成——深度带来与广度不同的收获', '练习在不舒适中停留，而不立刻重构或逃离', '每天为悲伤或哀愁留出一小段刻意的空间——被感受的情绪才能被释放', '问自己："我这么忙碌是在回避什么？"——诚实地坐在这个答案里'],
+    },
+  },
+  8: {
+    strengths: {
+      en: ['Decisive leadership and the courage to act when others hesitate', 'Fierce loyalty and protection of those they care about', 'Directness that cuts through confusion to what matters', 'Raw vitality and the power to create real change'],
+      zh: ['果断的领导力与在他人犹豫时勇于行动的勇气', '对所爱之人强烈的忠诚与保护欲', '能穿透混乱、直抵要害的直接风格', '推动真实改变的原始活力与力量'],
+    },
+    growthSuggestions: {
+      en: ['Practice restraint before reacting — pause and ask: "What is the most effective response?"', 'Ask someone close to you what they need before offering what you want to give', 'Allow yourself moments of genuine vulnerability with one or two deeply trusted people', 'Notice when your strength is protecting others versus when it is protecting yourself from intimacy'],
+      zh: ['在做出反应之前练习克制——停下来问自己："最有效的回应是什么？"', '在给予之前先问对方真正需要什么', '允许自己在一两位深度信任的人面前有真实的脆弱时刻', '留意你的力量何时是在保护他人，何时是在保护自己免于亲密'],
+    },
+  },
+  9: {
+    strengths: {
+      en: ['Natural mediation and the ability to hold space for all sides', 'Genuine acceptance and patience that creates safety for others', 'Broad perspective that sees what each person contributes', 'Grounded, calming presence that others find deeply stabilizing'],
+      zh: ['天然的调解能力与为各方托举空间的天赋', '真实的接纳与耐心，为他人创造安全感', '看见每个人贡献的宽广视角', '踏实沉稳的存在感，令他人深感安定'],
+    },
+    growthSuggestions: {
+      en: ['Make small choices quickly without deliberating endlessly — action awakens your own voice', 'Notice when you are going along versus genuinely agreeing — and say so when they differ', 'Complete one personally meaningful task each day — not because someone asked, but because you chose it', 'Practice naming what you want clearly, even in small matters — your desires deserve a voice'],
+      zh: ['迅速做出小的决定，不再无休止地斟酌——行动能唤醒你自己的声音', '留意自己是在顺从还是真正同意——当两者不同时，说出来', '每天完成一件对自己有意义的事——不因为有人要求，而是因为你自己选择了', '练习清晰地说出你想要什么，哪怕只是小事——你的渴望值得被听见'],
+    },
+  },
+};
+
+// ---------------------------------------------------------------------------
 // Color palette
 // ---------------------------------------------------------------------------
 
@@ -291,6 +393,115 @@ export function exportResultAsPdf(result: PdfResultData, locale: Locale): void {
 
   y += 32;
 
+  // ─── Tritype ──────────────────────────────────────────────────────────────
+
+  if (result.tritype && result.tritype.length > 0) {
+    checkPageBreak(22);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    setColor(180, 180, 220);
+    const tritypeTitle = isZh ? '三型组合' : 'Tritype';
+    doc.text(tritypeTitle, margin, y);
+    y += 6;
+
+    setFillColor(60, 60, 90);
+    doc.rect(margin, y, contentWidth, 0.4, 'F');
+    y += 7;
+
+    setFillColor(22, 22, 38);
+    doc.roundedRect(margin, y, contentWidth, 14, 2, 2, 'F');
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    setColor(200, 200, 240);
+    const tritypeStr = result.tritype.join('-');
+    doc.text(tritypeStr, margin + 6, y + 9);
+
+    doc.setFontSize(8.5);
+    setColor(140, 140, 180);
+    const tritypeDesc = isZh
+      ? `三个智慧中心（本能/情感/思维）的主导类型`
+      : `Dominant type in each of the three centers (Gut · Heart · Head)`;
+    doc.text(tritypeDesc, margin + 28, y + 9);
+
+    y += 22;
+  }
+
+  // ─── Strengths ────────────────────────────────────────────────────────────
+
+  const extras = TYPE_EXTRAS[result.primaryType];
+
+  if (extras) {
+    checkPageBreak(36);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    setColor(180, 180, 220);
+    const strengthsTitle = isZh ? '核心优势' : 'Key Strengths';
+    doc.text(strengthsTitle, margin, y);
+    y += 6;
+
+    setFillColor(60, 60, 90);
+    doc.rect(margin, y, contentWidth, 0.4, 'F');
+    y += 7;
+
+    const strengths = isZh ? extras.strengths.zh : extras.strengths.en;
+    for (const s of strengths) {
+      checkPageBreak(7);
+      // bullet dot
+      setFillColor(...ACCENT);
+      doc.circle(margin + 2, y - 1, 1, 'F');
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      setColor(190, 190, 230);
+      doc.text(s, margin + 7, y + 1);
+      y += 6.5;
+    }
+    y += 4;
+  }
+
+  // ─── Growth suggestions ───────────────────────────────────────────────────
+
+  if (extras) {
+    checkPageBreak(40);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    setColor(180, 180, 220);
+    const suggestTitle = isZh ? '成长建议' : 'Growth Suggestions';
+    doc.text(suggestTitle, margin, y);
+    y += 6;
+
+    setFillColor(60, 60, 90);
+    doc.rect(margin, y, contentWidth, 0.4, 'F');
+    y += 7;
+
+    const suggestions = isZh ? extras.growthSuggestions.zh : extras.growthSuggestions.en;
+    for (let i = 0; i < suggestions.length; i++) {
+      checkPageBreak(12);
+      const suggLines = doc.splitTextToSize(suggestions[i]!, contentWidth - 10) as string[];
+      // Numbered circle
+      setFillColor(40, 50, 80);
+      doc.circle(margin + 3, y, 3, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7);
+      setColor(200, 200, 240);
+      doc.text(String(i + 1), margin + 3, y + 1, { align: 'center' });
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      setColor(185, 185, 225);
+      for (const line of suggLines) {
+        checkPageBreak(5.5);
+        doc.text(line, margin + 9, y + 1);
+        y += 5.2;
+      }
+      y += 3;
+    }
+    y += 3;
+  }
+
   // ─── Type description ─────────────────────────────────────────────────────
 
   checkPageBreak(30);
@@ -298,7 +509,7 @@ export function exportResultAsPdf(result: PdfResultData, locale: Locale): void {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   setColor(180, 180, 220);
-  const descTitle = isZh ? '类型描述' : 'Type Description';
+  const descTitle = isZh ? '类型详述' : 'Type Description';
   doc.text(descTitle, margin, y);
   y += 6;
 
@@ -309,22 +520,23 @@ export function exportResultAsPdf(result: PdfResultData, locale: Locale): void {
   const description = typeDescriptions[result.primaryType];
   if (description) {
     const descText = isZh ? description.zh : description.en;
-    // Take the first paragraph only to keep PDF concise
-    const firstParagraph = descText.split('\n\n')[0] ?? descText;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
-    setColor(180, 180, 210);
+    setColor(175, 175, 210);
 
-    const lines = doc.splitTextToSize(firstParagraph, contentWidth);
-    const maxLines = 28; // cap to avoid overflow
-    const cappedLines = lines.slice(0, maxLines) as string[];
-    for (const line of cappedLines) {
-      checkPageBreak(5.5);
-      doc.text(line as string, margin, y);
-      y += 5.2;
+    // Render full description paragraph by paragraph
+    const paragraphs = descText.split('\n\n');
+    for (const para of paragraphs) {
+      const lines = doc.splitTextToSize(para.trim(), contentWidth) as string[];
+      for (const line of lines) {
+        checkPageBreak(5.5);
+        doc.text(line, margin, y);
+        y += 5.2;
+      }
+      y += 3; // inter-paragraph spacing
     }
-    y += 4;
+    y += 2;
   }
 
   // ─── Footer ───────────────────────────────────────────────────────────────

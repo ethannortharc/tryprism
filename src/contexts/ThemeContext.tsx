@@ -22,8 +22,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const toggleTheme = () => {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
+    // Add transition class so theme switch is animated, then remove after transition
+    document.documentElement.classList.add('theme-transitioning');
+    document.body.classList.add('theme-transitioning');
     setTheme(next);
     setThemeState(next);
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+      document.body.classList.remove('theme-transitioning');
+    }, 450);
   };
 
   return (

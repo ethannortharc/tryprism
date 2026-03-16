@@ -38,19 +38,19 @@
     "likert5": "非常同意"
   },
   "results": {
-    "yourType": "你的类型",
+    "yourType": "你的九型人格类型",
     "wing": "翼型",
     "tritype": "三型组合",
-    "growth": "成长方向",
+    "growth": "整合方向（成长）",
     "stress": "压力方向",
-    "strengths": "优势特质",
+    "strengths": "核心优势",
     "challenges": "成长挑战",
-    "scoreDistribution": "得分分布",
+    "scoreDistribution": "各型得分分布",
     "primaryType": "主要类型",
     "growthSuggestions": "成长建议",
-    "typeDescription": "类型描述",
-    "lowConfidence": "置信度偏低——你的最高分非常接近",
-    "flatProfile": "分布较平均——你的得分较为均匀分布"
+    "typeDescription": "类型详述",
+    "lowConfidence": "置信度偏低——多个类型得分非常接近，结果供参考",
+    "flatProfile": "分布较平均——你的得分在各类型间较为均衡分布"
   },
   "history": {
     "title": "历史记录",
@@ -72,39 +72,39 @@
   "types": {
     "1": {
       "name": "改革者",
-      "tagline": "原则性强、目标明确、自律克制"
+      "tagline": "原则坚定、目标明确、追求正直"
     },
     "2": {
       "name": "助人者",
-      "tagline": "慷慨热情、善解人意、渴望认可"
+      "tagline": "温暖慷慨、善解人意、真诚关怀"
     },
     "3": {
       "name": "成就者",
-      "tagline": "适应力强、追求卓越、目标驱动"
+      "tagline": "目标驱动、适应力强、激励他人"
     },
     "4": {
       "name": "个人主义者",
-      "tagline": "富有表现力、情感深邃、渴望独特"
+      "tagline": "真实坦诚、富有创造力、情感深邃"
     },
     "5": {
       "name": "调查者",
-      "tagline": "洞察力强、善于创新、注重私人空间"
+      "tagline": "洞察敏锐、深度专注、善于分析"
     },
     "6": {
       "name": "忠诚者",
-      "tagline": "投入负责、忠实可靠、容易焦虑"
+      "tagline": "忠实可靠、负责任、深思熟虑"
     },
     "7": {
       "name": "热情者",
-      "tagline": "自发活跃、多才多艺、追求满足"
+      "tagline": "活力充沛、多才多艺、乐观进取"
     },
     "8": {
       "name": "挑战者",
-      "tagline": "自信果断、勇于担当、直接对抗"
+      "tagline": "自信果断、勇于担当、保护他人"
     },
     "9": {
       "name": "和平者",
-      "tagline": "包容接纳、安抚人心、容易自我忽视"
+      "tagline": "包容接纳、耐心沉稳、善于调和"
     }
   },
   "common": {

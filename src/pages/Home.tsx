@@ -1,11 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
-import { useTheme } from '../contexts/ThemeContext';
+import HeaderControls from '../components/HeaderControls';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { t, locale, toggleLocale } = useI18n();
-  const { theme, toggleTheme } = useTheme();
+  const { t } = useI18n();
+
+  const handleQuickMode = () => {
+    navigate('/quiz?mode=quick', { flushSync: true });
+  };
+
+  const handleFullMode = () => {
+    navigate('/quiz?mode=full', { flushSync: true });
+  };
 
   return (
     <main
@@ -22,35 +29,7 @@ export default function Home() {
         width: '100%',
       }}
     >
-      {/* Header controls */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 'var(--space-4)',
-          right: 'var(--space-6)',
-          display: 'flex',
-          gap: 'var(--space-3)',
-          zIndex: 100,
-        }}
-      >
-        <button
-          data-testid="language-toggle"
-          aria-label={`Switch language (current: ${locale === 'en' ? 'English' : 'Chinese'})`}
-          className="toggle-btn"
-          onClick={toggleLocale}
-        >
-          {locale === 'en' ? '中文' : 'EN'}
-        </button>
-
-        <button
-          data-testid="theme-toggle"
-          aria-label={`Toggle theme (current: ${theme === 'dark' ? 'dark mode' : 'light mode'})`}
-          className="toggle-btn"
-          onClick={toggleTheme}
-        >
-          {theme === 'dark' ? '☀' : '☽'}
-        </button>
-      </div>
+      <HeaderControls />
 
       {/* Branding */}
       <div
@@ -100,7 +79,7 @@ export default function Home() {
           style={{
             textAlign: 'center',
             fontSize: '0.875rem',
-            color: 'var(--text-muted)',
+            color: 'var(--text-secondary)',
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
             marginBottom: 'var(--space-2)',
@@ -113,19 +92,16 @@ export default function Home() {
         <button
           data-testid="quick-mode-card"
           className="mode-card"
-          onClick={() => navigate('/quiz?mode=quick')}
+          onClick={handleQuickMode}
         >
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
             <span
               style={{
-                fontSize: '0.75rem',
-                fontWeight: 600,
+                fontSize: '0.875rem',
+                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-                color: 'var(--type-7)',
-                padding: '2px 8px',
-                borderRadius: '4px',
-                background: 'rgba(200, 126, 232, 0.1)',
+                letterSpacing: '0.08em',
+                color: 'var(--text-primary)',
               }}
             >
               {t('mode.quick')}
@@ -140,19 +116,16 @@ export default function Home() {
         <button
           data-testid="full-mode-card"
           className="mode-card"
-          onClick={() => navigate('/quiz?mode=full')}
+          onClick={handleFullMode}
         >
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
             <span
               style={{
-                fontSize: '0.75rem',
-                fontWeight: 600,
+                fontSize: '0.875rem',
+                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-                color: 'var(--type-5)',
-                padding: '2px 8px',
-                borderRadius: '4px',
-                background: 'rgba(126, 139, 232, 0.1)',
+                letterSpacing: '0.08em',
+                color: 'var(--text-primary)',
               }}
             >
               {t('mode.full')}

@@ -38,19 +38,19 @@
     "likert5": "Strongly Agree"
   },
   "results": {
-    "yourType": "Your Type",
+    "yourType": "Your Enneagram Type",
     "wing": "Wing",
     "tritype": "Tritype",
     "growth": "Growth Direction",
     "stress": "Stress Direction",
-    "strengths": "Strengths",
-    "challenges": "Challenges",
+    "strengths": "Key Strengths",
+    "challenges": "Growth Edges",
     "scoreDistribution": "Score Distribution",
     "primaryType": "Primary Type",
     "growthSuggestions": "Growth Suggestions",
     "typeDescription": "Type Description",
-    "lowConfidence": "Low Confidence — your top scores are very close",
-    "flatProfile": "Flat Profile — your scores are broadly distributed"
+    "lowConfidence": "Low Confidence — your top scores are very close; treat results as a starting point",
+    "flatProfile": "Flat Profile — your scores are broadly distributed across types"
   },
   "history": {
     "title": "Your History",
@@ -72,39 +72,39 @@
   "types": {
     "1": {
       "name": "The Reformer",
-      "tagline": "Principled, purposeful, self-controlled"
+      "tagline": "Principled, purposeful, integrity-driven"
     },
     "2": {
       "name": "The Helper",
-      "tagline": "Generous, demonstrative, people-pleasing"
+      "tagline": "Warm, generous, deeply caring"
     },
     "3": {
       "name": "The Achiever",
-      "tagline": "Adaptable, excelling, driven"
+      "tagline": "Driven, adaptable, inspiring"
     },
     "4": {
       "name": "The Individualist",
-      "tagline": "Expressive, dramatic, self-absorbed"
+      "tagline": "Authentic, creative, emotionally deep"
     },
     "5": {
       "name": "The Investigator",
-      "tagline": "Perceptive, innovative, secretive"
+      "tagline": "Perceptive, analytical, deeply focused"
     },
     "6": {
       "name": "The Loyalist",
-      "tagline": "Engaging, responsible, anxious"
+      "tagline": "Loyal, responsible, thoughtfully cautious"
     },
     "7": {
       "name": "The Enthusiast",
-      "tagline": "Spontaneous, versatile, acquisitive"
+      "tagline": "Spontaneous, versatile, optimistic"
     },
     "8": {
       "name": "The Challenger",
-      "tagline": "Self-confident, decisive, confrontational"
+      "tagline": "Self-confident, decisive, protective"
     },
     "9": {
       "name": "The Peacemaker",
-      "tagline": "Receptive, reassuring, complacent"
+      "tagline": "Receptive, patient, harmonizing"
     }
   },
   "common": {

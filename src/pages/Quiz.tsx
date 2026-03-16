@@ -8,6 +8,7 @@ import type { Answer } from '../types/index';
 import ProgressBar from '../components/ProgressBar';
 import Question from '../components/Question';
 import LikertScale from '../components/LikertScale';
+import HeaderControls from '../components/HeaderControls';
 
 export default function Quiz() {
   const [searchParams] = useSearchParams();
@@ -99,7 +100,6 @@ export default function Quiz() {
   return (
     <main
       className="page-enter"
-      role="main"
       style={{
         minHeight: '100vh',
         display: 'flex',
@@ -109,6 +109,7 @@ export default function Quiz() {
         padding: 'var(--space-8) var(--space-6)',
       }}
     >
+      <HeaderControls />
       <div
         style={{
           width: '100%',
