@@ -1,0 +1,636 @@
+project:
+  name: tryprism
+  type: software
+  description: >
+    Bilingual (Chinese/English) Enneagram personality test web application with premium calm design.
+    Pure static frontend with client-side PDF generation. Supports quick mode (54 questions, ~8 min)
+    and full mode (108 questions, ~15 min). Detailed results including primary type, wing analysis,
+    tritype, growth/stress arrows, and all 9-type score distribution. Dark mode default with light
+    mode toggle. Results saved locally via localStorage.
+  created: 2026-03-16
+  status: draft
+
+spec_version: 1
+changelog:
+  - version: 1
+    date: 2026-03-16
+    source: human
+    change: "Initial spec from user intent"
+    added: [all]
+    modified: []
+    removed: []
+
+environment:
+  capabilities:
+    - id: node
+      type: runtime
+      version: "25.8.0"
+      detected: true
+      enables: [build, dev-server, package-management]
+    - id: npm
+      type: tool
+      version: "11.11.0"
+      detected: true
+      enables: [dependency-management]
+    - id: git
+      type: tool
+      version: "2.50.1"
+      detected: true
+      enables: [version-control, ratchet-backend]
+    - id: vitest
+      type: tool
+      version: "latest"
+      detected: false
+      enables: [unit-testing, scoring-validation, i18n-validation]
+    - id: playwright
+      type: tool
+      version: "1.58.2"
+      detected: true
+      enables: [browser-testing, integration-testing, responsive-testing, pdf-testing]
+    - id: typescript
+      type: tool
+      version: "latest"
+      detected: false
+      enables: [type-checking, static-analysis]
+    - id: axe-core
+      type: tool
+      version: "latest"
+      detected: false
+      enables: [accessibility-testing]
+  absent:
+    - id: pnpm
+      impact: "No impact — npm is available"
+      install_hint: "npm install -g pnpm"
+      agent_can_install: true
+
+invariants:
+  - id: INV-01
+    claim: "App builds successfully with zero errors and zero warnings"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [node, npm, typescript]
+    check: "npm run build"
+    test_method: |
+      Static analysis:
+      - TypeScript compiles with strict mode, zero errors
+      - Build output generates valid static assets
+      Unit test:
+      - Import key modules, verify no runtime import errors
+    tools_required:
+      - id: typescript
+        install: "npm install -D typescript"
+        agent_can_install: true
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "build_errors + type_errors (0 = pass)"
+
+  - id: INV-02
+    claim: "Home page renders with branding, mode selection, language toggle, and theme toggle"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-02"
+    test_method: |
+      Integration test (browser):
+      - Navigate to home page
+      - Verify app title/branding visible
+      - Verify quick mode and full mode selection options present
+      - Verify language toggle (zh/en) present and functional
+      - Verify dark/light mode toggle present
+      - No console errors
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "elements_found / elements_expected"
+
+  - id: INV-03
+    claim: "Quiz page displays questions with Likert-scale options, progress bar, and back/next navigation"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-03"
+    test_method: |
+      Integration test (browser):
+      - Start quiz in quick mode
+      - Verify question text displays
+      - Verify answer options (Likert scale) are interactive
+      - Verify progress bar shows current position
+      - Verify next button advances, back button retreats
+      - Navigate through several questions, verify progress updates
+      - No console errors throughout
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "navigation_checks_passed / total_checks"
+
+  - id: INV-04
+    claim: "Quick mode presents exactly 54 questions covering all 9 types (6 per type)"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [vitest]
+    check: "npx vitest run tests/inv-04"
+    test_method: |
+      Unit tests:
+      - Quick mode question bank contains exactly 54 questions
+      - Each of the 9 types has exactly 6 questions
+      - No duplicate questions
+      - All questions have both zh and en translations
+      Integration test:
+      - Start quick mode, navigate through all 54 questions
+      - Verify quiz completes after question 54
+    tools_required:
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "questions_valid / 54"
+
+  - id: INV-05
+    claim: "Full mode presents exactly 108 questions covering all 9 types (12 per type)"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [vitest]
+    check: "npx vitest run tests/inv-05"
+    test_method: |
+      Unit tests:
+      - Full mode question bank contains exactly 108 questions
+      - Each of the 9 types has exactly 12 questions
+      - Quick mode questions are a subset of full mode questions
+      - No duplicate questions
+      - All questions have both zh and en translations
+    tools_required:
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "questions_valid / 108"
+
+  - id: INV-06
+    claim: "Scoring algorithm correctly identifies primary Enneagram type from answer patterns"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [vitest]
+    check: "npx vitest run tests/inv-06"
+    test_method: |
+      Unit tests covering:
+      - Perfect-score scenarios: answers strongly favor one type → that type is primary
+      - Each of the 9 types can be correctly identified as primary
+      - Weighted scoring produces continuous scores (not just tallies)
+      - Score normalization: all 9 type scores sum to consistent total
+      - Boundary cases: minimum and maximum possible inputs
+      - Invalid input handling: missing answers, out-of-range values
+      Edge cases:
+      - Tied scores between 2+ types → handled gracefully (flag low confidence)
+      - Very flat profile (all types similar) → flagged appropriately
+    tools_required:
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "scoring_tests_passed / scoring_tests_total"
+
+  - id: INV-07
+    claim: "Wing calculation always selects from the two adjacent types on the Enneagram circle"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [vitest]
+    check: "npx vitest run tests/inv-07"
+    test_method: |
+      Unit tests:
+      - For each primary type (1-9), verify wing is always one of the two adjacent types:
+        1→{9,2}, 2→{1,3}, 3→{2,4}, 4→{3,5}, 5→{4,6}, 6→{5,7}, 7→{6,8}, 8→{7,9}, 9→{8,1}
+      - Even if a non-adjacent type has a higher score, wing must be adjacent
+      - Equal adjacent scores → handled gracefully (pick one or flag both)
+    tools_required:
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "wing_tests_passed / wing_tests_total"
+
+  - id: INV-08
+    claim: "Results page displays primary type, wing, 9-type score chart, and growth/stress arrows"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-08"
+    test_method: |
+      Integration test (browser):
+      - Complete a quiz (can use programmatic state injection)
+      - Verify primary type name and number displayed
+      - Verify wing displayed (e.g., "4w5")
+      - Verify visual chart/graph showing all 9 type scores
+      - Verify growth arrow (integration direction) displayed
+      - Verify stress arrow (disintegration direction) displayed
+      - Verify tritype section present
+      - Verify type description text present (non-empty, substantial)
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "result_sections_found / result_sections_expected"
+
+  - id: INV-09
+    claim: "PDF export generates a downloadable document containing complete test results"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-09"
+    test_method: |
+      Integration test (browser):
+      - Navigate to results page with completed test data
+      - Click PDF export/download button
+      - Verify download triggered (intercept download event)
+      - Verify downloaded file is valid PDF (check magic bytes or parse)
+      - Verify PDF contains: primary type, wing, score distribution, descriptions
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "pdf_checks_passed / pdf_checks_total"
+
+  - id: INV-10
+    claim: "Language toggle switches all visible UI text between Chinese and English"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-10"
+    test_method: |
+      Integration test (browser):
+      - Load app in default language
+      - Toggle to other language
+      - Verify page title, navigation, buttons all changed language
+      - Verify no untranslated strings remain (no mixed languages)
+      - Toggle back, verify original language restored
+      - Test on all key pages: home, quiz, results
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "pages_fully_translated / total_pages"
+
+  - id: INV-11
+    claim: "All UI strings exist in both zh and en locale files with no missing keys"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [vitest]
+    check: "npx vitest run tests/inv-11"
+    test_method: |
+      Unit tests:
+      - Parse en locale file(s), collect all keys (including nested)
+      - Parse zh locale file(s), collect all keys
+      - Verify en key set === zh key set (bidirectional check)
+      - Verify no empty string values in either locale
+      - Verify question bank: every question has both zh and en text
+    tools_required:
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "matched_keys / total_keys"
+
+  - id: INV-12
+    claim: "Dark/light mode toggle changes theme and persists preference"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-12"
+    test_method: |
+      Integration test (browser):
+      - Load app (should default to dark mode)
+      - Verify dark theme CSS active (background color, text color)
+      - Toggle to light mode
+      - Verify light theme CSS active
+      - Reload page, verify light mode persisted (localStorage)
+      - Toggle back, verify dark mode restored
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "theme_checks_passed / theme_checks_total"
+
+  - id: INV-13
+    claim: "Responsive layout works on mobile (375px) and desktop (1440px) without overflow or broken elements"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-13"
+    test_method: |
+      Integration test (browser):
+      - Test at 375x812 (iPhone SE): no horizontal overflow, all buttons tappable, text readable
+      - Test at 1440x900 (desktop): proper layout, no excessive stretching
+      - Test at 768x1024 (tablet): intermediate layout works
+      - On each viewport: verify home, quiz, and results pages
+      - No elements overflowing viewport (check scrollWidth > clientWidth)
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+    ratchet_metric: "viewport_tests_passed / viewport_tests_total"
+
+  - id: INV-14
+    claim: "localStorage saves completed test results and restores them on revisit"
+    track: agent
+    confidence: high
+    verifier: auto
+    requires: [playwright]
+    check: "npx playwright test tests/inv-14"
+    test_method: |
+      Integration test (browser):
+      - Complete a quiz
+      - Verify localStorage contains result data
+      - Reload the page
+      - Verify results are accessible (e.g., results page shows previous results)
+      - Clear localStorage, verify results no longer available
+      Unit tests:
+      - Serialize/deserialize result object to/from localStorage
+      - Handle corrupted localStorage gracefully
+    tools_required:
+      - id: playwright
+        install: "npx playwright install chromium"
+        agent_can_install: true
+      - id: vitest
+        install: "npm install -D vitest"
+        agent_can_install: true
+    ratchet_metric: "persistence_checks_passed / persistence_checks_total"
+
+quality_dimensions:
+  - id: QD-01
+    dimension: "Visual design quality — premium, calm, professional dark-mode aesthetic"
+    track: human
+    confidence: medium
+    verifier: human
+    rubric: |
+      5: Stunning premium feel — sophisticated color palette, beautiful typography, intentional
+         whitespace, subtle animations, feels like a premium meditation/wellness app
+      3: Acceptable but generic — clean layout, consistent spacing, but could be any template
+      1: Cheap or cluttered — poor color choices, inconsistent spacing, feels amateur
+    threshold: 4
+    test_method: |
+      Human review:
+      - Open app on desktop and mobile
+      - Evaluate overall aesthetic impression
+      - Check typography hierarchy and readability
+      - Verify dark mode feels intentional, not just inverted colors
+      - Check that prismatic/spectrum accent colors are used tastefully
+    tools_required: []
+    ratchet_metric: "human_score (1-5)"
+
+  - id: QD-02
+    dimension: "Enneagram type descriptions — accurate, empathetic, actionable, non-judgmental"
+    track: agent
+    confidence: medium
+    verifier: ai_review
+    rubric: |
+      5: Matches established Enneagram definitions, empathetic and non-judgmental tone,
+         includes concrete growth suggestions, 200-400 words per type, covers core motivation,
+         fear, desire, strengths, challenges, and growth path
+      3: Mostly accurate but generic or surface-level, lacks depth or actionability
+      1: Inaccurate, judgmental, or dismissive of any type
+    threshold: 4
+    test_method: |
+      AI review evaluates each of the 9 type descriptions against:
+      - Accuracy: core motivation, fear, desire match established definitions
+      - Tone: empathetic, affirming, non-judgmental
+      - Actionability: includes growth suggestions and practical insights
+      - Completeness: covers strengths, challenges, growth/stress patterns
+      - Length: 200-400 words per type
+    tools_required: []
+    ratchet_metric: "ai_review_score (1-5)"
+
+  - id: QD-03
+    dimension: "Chinese translation quality — natural, culturally adapted, not robotic"
+    track: agent
+    confidence: medium
+    verifier: ai_review
+    rubric: |
+      5: Reads like native Chinese writing, culturally adapted (not literal translation),
+         personality concepts expressed naturally in Chinese psychological vocabulary
+      3: Understandable but clearly translated, occasional awkward phrasing
+      1: Robotic translation, cultural concepts lost, awkward or incorrect Chinese
+    threshold: 4
+    test_method: |
+      AI review evaluates:
+      - UI text: natural Chinese phrasing for buttons, labels, navigation
+      - Type descriptions: culturally adapted, not word-for-word translation
+      - Questions: psychologically equivalent (not just linguistically translated)
+      - No mixed scripts or encoding issues
+      - Personality concepts use accepted Chinese psychology terminology
+    tools_required: []
+    ratchet_metric: "ai_review_score (1-5)"
+
+  - id: QD-04
+    dimension: "PDF export quality — professional layout, complete results, shareable"
+    track: agent
+    confidence: medium
+    verifier: ai_review
+    rubric: |
+      5: Professional report quality — clear sections, good typography, chart/visualization
+         included, all result sections present, looks like a paid assessment report
+      3: Readable but plain — text-only, minimal formatting, functional but not impressive
+      1: Broken formatting, missing sections, or unreadable
+    threshold: 4
+    test_method: |
+      AI review evaluates generated PDF:
+      - Layout: clear sections, headers, visual hierarchy
+      - Content: primary type, wing, all 9 scores, descriptions, growth suggestions
+      - Visuals: score chart or visualization included
+      - Bilingual: PDF generated in the user's selected language
+      - Shareability: looks professional enough to share with others
+    tools_required: []
+    ratchet_metric: "ai_review_score (1-5)"
+
+  - id: QD-05
+    dimension: "Accessibility — WCAG 2.1 AA contrast, keyboard navigation, semantic HTML"
+    track: agent
+    confidence: high
+    verifier: auto
+    rubric: |
+      5: Zero WCAG 2.1 AA violations, full keyboard navigation, proper ARIA labels
+      3: Minor violations (non-critical), most elements keyboard accessible
+      1: Major contrast failures, keyboard traps, no semantic HTML
+    threshold: 3
+    test_method: |
+      Automated accessibility scan:
+      - Run axe-core on all pages (home, quiz, results)
+      - Check color contrast ratios meet AA standard (4.5:1 for text)
+      - Verify keyboard tab navigation through all interactive elements
+      - Verify semantic HTML (headings hierarchy, form labels, button roles)
+    tools_required:
+      - id: "@axe-core/playwright"
+        install: "npm install -D @axe-core/playwright"
+        agent_can_install: true
+    ratchet_metric: "1 - (violations / total_elements)"
+
+  - id: QD-06
+    dimension: "Question quality — targets motivations, avoids social desirability bias"
+    track: agent
+    confidence: medium
+    verifier: ai_review
+    rubric: |
+      5: Questions probe core motivations and fears (not just behaviors), balanced positive/negative
+         framing, minimal social desirability bias, culturally sensitive for both Chinese and English audiences
+      3: Adequate questions but surface-level, some obvious social desirability issues
+      1: Behavioral-only questions, heavy bias toward socially desirable answers, culturally insensitive
+    threshold: 4
+    test_method: |
+      AI review evaluates question bank:
+      - Motivation targeting: questions address WHY (motivations, fears, desires) not just WHAT (behaviors)
+      - Bias mitigation: both options in each question are equally desirable/neutral
+      - Cultural sensitivity: no Western-centric idioms, works for Chinese and English audiences
+      - Coverage: each type's questions cover different facets (not repetitive)
+      - Framing balance: mix of positively and negatively framed items
+    tools_required: []
+    ratchet_metric: "ai_review_score (1-5)"
+
+preferences:
+  - "Dark mode is default, with light mode toggle available"
+  - "Mobile-first responsive design"
+  - "No user registration or accounts — fully anonymous"
+  - "No external analytics or tracking"
+  - "No backend — pure static frontend"
+  - "Client-side PDF generation"
+  - "localStorage for result persistence"
+
+delivery:
+  format: web_app
+  ui_direction:
+    style: "Premium, calm, contemplative — dark mode with prismatic accent colors"
+    key_screens:
+      - name: home
+        purpose: "Welcome, branding, mode selection"
+        elements:
+          - app_logo_title
+          - tagline_description
+          - quick_mode_card
+          - full_mode_card
+          - language_toggle
+          - theme_toggle
+      - name: quiz
+        purpose: "Answer personality questions"
+        elements:
+          - question_number_and_progress_bar
+          - question_text
+          - likert_scale_options
+          - back_button
+          - next_button
+      - name: results
+        purpose: "Display comprehensive personality analysis"
+        elements:
+          - primary_type_hero (type number, name, brief tagline)
+          - wing_indicator
+          - nine_type_radar_chart
+          - type_description (detailed, 200-400 words)
+          - growth_stress_arrows_diagram
+          - tritype_section
+          - strengths_and_challenges
+          - growth_suggestions
+          - pdf_export_button
+          - retake_button
+          - share_section
+      - name: history
+        purpose: "View previous test results from localStorage"
+        elements:
+          - result_list_with_dates
+          - view_detail_button
+          - clear_history_button
+    user_journey:
+      - "home → select mode (quick/full)"
+      - "quiz (54 or 108 questions) → results"
+      - "results → PDF export or retake"
+      - "home → history → view past results"
+    mood: >
+      Premium and contemplative. Think high-end wellness app meets professional psychological assessment.
+      Dark backgrounds (#0a0a0f to #1a1a2e range) with prismatic accent colors — the "prism" metaphor
+      of light splitting into a spectrum of personality facets. Subtle gradients, generous whitespace,
+      refined typography. Each Enneagram type gets a unique accent color from the spectrum. Micro-animations
+      for transitions (page changes, progress updates) that feel smooth, never flashy.
+    anti_patterns:
+      - "No gamification or points/badges"
+      - "No countdown timers or time pressure"
+      - "No social pressure (no 'X people taking this now')"
+      - "No login/signup walls"
+      - "No ads or upselling"
+      - "No generic Bootstrap/Material UI look"
+      - "No bright/neon colors in dark mode"
+
+agent_guidance: |
+  You are building "TryPrism" — a bilingual Enneagram personality test web app.
+
+  DOMAIN CONTEXT:
+  - Enneagram has 9 types organized in 3 centers: Gut (8,9,1), Heart (2,3,4), Head (5,6,7)
+  - Wings are ALWAYS adjacent types on the circle (e.g., Type 4 can only have wing 3 or 5)
+  - Tritype = dominant type in each center (e.g., 459 = Type 4 primary, Type 5 head, Type 9 gut)
+  - Growth arrows: 1→7, 2→4, 3→6, 4→1, 5→8, 6→9, 7→5, 8→2, 9→3
+  - Stress arrows: 1→4, 2→8, 3→9, 4→2, 5→7, 6→3, 7→1, 8→5, 9→6
+
+  SCORING:
+  - Use weighted Likert scoring (not simple tallying)
+  - Each question contributes to 1-2 types with different weights
+  - Normalize scores to produce percentage distribution across all 9 types
+  - Flag low-confidence results when top scores are within 10% of each other
+
+  QUESTIONS:
+  - Quick mode: 54 questions (6 per type), ~8 min
+  - Full mode: 108 questions (12 per type), ~15 min
+  - Questions should probe core motivations and fears, not surface behaviors
+  - Both Chinese and English versions must be psychologically equivalent (not literal translations)
+  - Avoid Western-centric idioms and culturally biased scenarios
+
+  ARCHITECTURE:
+  - Pure static frontend — no backend, no API calls
+  - Client-side PDF generation (choose appropriate library)
+  - i18n with structured locale files (not hardcoded strings)
+  - localStorage for saving results with timestamps
+
+  DESIGN:
+  - The "prism" metaphor: light (the test) splits into a spectrum (personality facets)
+  - Each of the 9 types should have a distinct accent color from a prismatic palette
+  - Dark mode default, premium calm aesthetic
+  - Mobile-first but excellent on desktop too
+
+  WHEN STUCK:
+  - Scoring logic: refer to established Enneagram research, especially RHETI methodology
+  - Visual design: use the prism/spectrum metaphor for inspiration
+  - Chinese translations: prioritize natural expression over literal accuracy
+  - PDF layout: aim for professional assessment report quality
+
+  DO NOT:
+  - Add a backend or database
+  - Require user registration or authentication
+  - Add external analytics or tracking scripts
+  - Use gamification elements
+  - Make the UI feel generic or template-like
+
+ratchet:
+  enabled: true
+  default_budget: 8
+  strategy: keep_best
+  backend: git
+  composite_score:
+    method: weighted_average
+    weights:
+      auto_pass_rate: 0.7
+      ai_review_avg: 0.3
+
+profile_applied:
+  - key: intervention
+    value: minimal
+    source: profile
+  - key: quality_speed
+    value: quality_first
+    source: profile
+  - key: risk_tolerance
+    value: high
+    source: profile
