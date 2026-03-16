@@ -467,7 +467,10 @@ export default function Results() {
 
         <button
           data-testid="pdf-export-button"
-          onClick={() => exportResultAsPdf(result, locale)}
+          onClick={() => {
+            const mainEl = document.querySelector('main') as HTMLElement;
+            exportResultAsPdf(result, locale, mainEl);
+          }}
           style={{
             padding: 'var(--space-3) var(--space-8)',
             background: 'var(--accent-primary)',
