@@ -138,7 +138,7 @@ test.describe('INV-10 — No mixed language strings after toggle', () => {
 
 test.describe('INV-10 — Language toggle on quiz page', () => {
   test('language toggle is accessible and functional during quiz', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto(`${BASE_URL}/enneagram`);
     const quickMode = page.getByTestId('quick-mode-card')
       .or(page.getByRole('button', { name: /quick/i }));
     await quickMode.first().click();

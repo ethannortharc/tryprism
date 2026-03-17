@@ -1,20 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import { useI18n } from '../contexts/I18nContext';
-import HeaderControls from '../components/HeaderControls';
+import { useI18n } from '../../contexts/I18nContext';
+import HeaderControls from '../../components/HeaderControls';
 
-export default function Home() {
+export default function MbtiHome() {
   const navigate = useNavigate();
   const { t } = useI18n();
 
   const handleQuickMode = () => {
-    navigate('/quiz?mode=quick', { flushSync: true });
+    navigate('/mbti/quiz?mode=quick');
   };
 
   const handleFullMode = () => {
-    navigate('/quiz?mode=full', { flushSync: true });
+    navigate('/mbti/quiz?mode=full');
   };
 
-  const handleBackToHub = () => {
+  const handleBack = () => {
     navigate('/');
   };
 
@@ -44,7 +44,7 @@ export default function Home() {
       >
         <button
           data-testid="back-to-hub"
-          onClick={handleBackToHub}
+          onClick={handleBack}
           style={{
             padding: 'var(--space-2) var(--space-4)',
             background: 'transparent',
@@ -68,22 +68,29 @@ export default function Home() {
         }}
       >
         <h1
-          data-testid="app-title"
+          data-testid="mbti-title"
           style={{
-            background: 'linear-gradient(135deg, #7e8be8 0%, #c87ee8 50%, #e87eb8 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            color: 'var(--mbti-analyst)',
             marginBottom: 'var(--space-4)',
             fontSize: 'clamp(2.5rem, 8vw, 5rem)',
             fontWeight: 700,
           }}
         >
-          {t('app.title')}
+          {t('mbti.title')}
         </h1>
 
         <p
-          data-testid="app-tagline"
+          data-testid="mbti-subtitle"
+          style={{
+            fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+            color: 'var(--text-secondary)',
+            marginBottom: 'var(--space-2)',
+          }}
+        >
+          {t('mbti.subtitle')}
+        </p>
+
+        <p
           style={{
             fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
             color: 'var(--text-secondary)',
@@ -91,7 +98,7 @@ export default function Home() {
             margin: '0 auto',
           }}
         >
-          {t('app.tagline')}
+          {t('mbti.tagline')}
         </p>
       </div>
 
@@ -114,12 +121,12 @@ export default function Home() {
             marginBottom: 'var(--space-2)',
           }}
         >
-          {t('mode.selectMode')}
+          {t('mbti.mode.selectMode')}
         </p>
 
         {/* Quick mode */}
         <button
-          data-testid="quick-mode-card"
+          data-testid="mbti-quick-mode-card"
           className="mode-card"
           onClick={handleQuickMode}
         >
@@ -133,17 +140,17 @@ export default function Home() {
                 color: 'var(--text-primary)',
               }}
             >
-              {t('mode.quick')}
+              {t('mbti.mode.quick')}
             </span>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
-            {t('mode.quickDescription')}
+            {t('mbti.mode.quickDescription')}
           </p>
         </button>
 
         {/* Full mode */}
         <button
-          data-testid="full-mode-card"
+          data-testid="mbti-full-mode-card"
           className="mode-card"
           onClick={handleFullMode}
         >
@@ -157,11 +164,11 @@ export default function Home() {
                 color: 'var(--text-primary)',
               }}
             >
-              {t('mode.full')}
+              {t('mbti.mode.full')}
             </span>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
-            {t('mode.fullDescription')}
+            {t('mbti.mode.fullDescription')}
           </p>
         </button>
       </div>

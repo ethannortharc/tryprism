@@ -11,6 +11,7 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import type { Locale } from './i18n';
+import type { MbtiType } from '../types/mbti';
 
 // ---------------------------------------------------------------------------
 // Type name maps (for filename only)
@@ -140,6 +141,100 @@ export async function exportResultAsPdf(
       ? `type${result.primaryType}-${typeNames[result.primaryType] ?? ''}`
       : `type${result.primaryType}-${(typeNames[result.primaryType] ?? '').replace(/\s+/g, '-').toLowerCase()}`;
     doc.save(`tryprism-${typePart}.pdf`);
+  } finally {
+    target.classList.remove('pdf-capture-mode');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// MBTI PDF export
+// ---------------------------------------------------------------------------
+
+/**
+ * Capture the MBTI results page and export as PDF.
+ * Filename format: tryprism-mbti-{TYPE}.pdf (e.g. tryprism-mbti-INFP.pdf)
+ * The locale parameter is accepted for API consistency but the filename is locale-independent.
+ */
+export async function exportMbtiResultAsPdf(
+  mbtiType: MbtiType,
+  _locale: Locale,
+  /** The DOM element to capture. If not provided, finds [data-pdf-content] or main. */
+  element?: HTMLElement | null,
+): Promise<void> {
+  // Find the element to capture
+  const target = element
+    ?? document.querySelector('[data-pdf-content]') as HTMLElement
+    ?? document.querySelector('main') as HTMLElement;
+
+  if (!target) {
+    console.error('No element found to capture for PDF');
+    return;
+  }
+
+  target.classList.add('pdf-capture-mode');
+
+  try {
+    const canvas = await html2canvas(target, {
+      backgroundColor: '#0c0c18',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      foreignObjectRendering: false,
+    });
+
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 8;
+    const contentWidth = pageWidth - margin * 2;
+
+    const imgAspect = canvas.height / canvas.width;
+    const imgWidth = contentWidth;
+    const imgHeight = imgWidth * imgAspect;
+
+    const imgData = canvas.toDataURL('image/png');
+
+    if (imgHeight <= pageHeight - margin * 2) {
+      doc.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+    } else {
+      const pageContentHeight = pageHeight - margin * 2;
+      const totalPages = Math.ceil(imgHeight / pageContentHeight);
+
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) doc.addPage();
+
+        const srcY = (page * pageContentHeight / imgHeight) * canvas.height;
+        const srcHeight = (pageContentHeight / imgHeight) * canvas.height;
+        const remainingHeight = canvas.height - srcY;
+        const actualSrcHeight = Math.min(srcHeight, remainingHeight);
+
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = actualSrcHeight;
+        const ctx = pageCanvas.getContext('2d');
+        if (!ctx) continue;
+
+        ctx.fillStyle = '#0c0c18';
+        ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+        ctx.drawImage(
+          canvas,
+          0, srcY, canvas.width, actualSrcHeight,
+          0, 0, canvas.width, actualSrcHeight,
+        );
+
+        const sliceData = pageCanvas.toDataURL('image/png');
+        const sliceHeight = (actualSrcHeight / canvas.height) * imgHeight;
+        doc.addImage(sliceData, 'PNG', margin, margin, imgWidth, sliceHeight);
+      }
+    }
+
+    // Filename: tryprism-mbti-INFP.pdf
+    doc.save(`tryprism-mbti-${mbtiType}.pdf`);
   } finally {
     target.classList.remove('pdf-capture-mode');
   }

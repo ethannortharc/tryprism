@@ -17,6 +17,18 @@
   --type-8: #e87eb8;   /* Challenger — rose */
   --type-9: #7ec8a8;   /* Peacemaker — seafoam */
 
+  /* MBTI type group colors */
+  --mbti-analyst:  #9b7ee8;   /* NT — purple  */
+  --mbti-diplomat: #5ec8a0;   /* NF — teal    */
+  --mbti-sentinel: #4a9ee8;   /* SJ — blue    */
+  --mbti-explorer: #e8b45c;   /* SP — amber   */
+
+  /* MBTI dichotomy pole colors */
+  --pole-e: #e8845c; --pole-i: #7e8be8;
+  --pole-s: #e8b45c; --pole-n: #9e7ee8;
+  --pole-t: #4a9ee8; --pole-f: #5ec8a0;
+  --pole-j: #e86c5c; --pole-p: #c87ee8;
+
   /* Typography */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter',
     'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;

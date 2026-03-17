@@ -18,7 +18,7 @@ const BASE_URL = process.env.APP_URL ?? 'http://localhost:5173';
 // ---------------------------------------------------------------------------
 
 async function startQuickMode(page: Page): Promise<void> {
-  await page.goto(BASE_URL);
+  await page.goto(`${BASE_URL}/enneagram`);
   const quickMode = page.getByTestId('quick-mode-card')
     .or(page.getByRole('button', { name: /quick/i }));
   await quickMode.first().click();

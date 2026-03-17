@@ -93,14 +93,14 @@ for (const viewport of VIEWPORTS) {
     });
 
     test(`quick mode card/button is visible`, async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto(`${BASE_URL}/enneagram`);
       const quickMode = page.getByTestId('quick-mode-card')
         .or(page.getByRole('button', { name: /quick/i }));
       await expect(quickMode.first()).toBeVisible();
     });
 
     test(`full mode card/button is visible`, async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto(`${BASE_URL}/enneagram`);
       const fullMode = page.getByTestId('full-mode-card')
         .or(page.getByRole('button', { name: /full/i }));
       await expect(fullMode.first()).toBeVisible();
@@ -124,7 +124,7 @@ for (const viewport of VIEWPORTS) {
     test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
     test(`no horizontal overflow on quiz page`, async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto(`${BASE_URL}/enneagram`);
       const quickMode = page.getByTestId('quick-mode-card')
         .or(page.getByRole('button', { name: /quick/i }));
       await quickMode.first().click().catch(() => {});
@@ -135,7 +135,7 @@ for (const viewport of VIEWPORTS) {
     });
 
     test(`question text is visible`, async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto(`${BASE_URL}/enneagram`);
       const quickMode = page.getByTestId('quick-mode-card')
         .or(page.getByRole('button', { name: /quick/i }));
       await quickMode.first().click().catch(() => {});
@@ -146,7 +146,7 @@ for (const viewport of VIEWPORTS) {
     });
 
     test(`answer options are visible and tappable`, async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto(`${BASE_URL}/enneagram`);
       const quickMode = page.getByTestId('quick-mode-card')
         .or(page.getByRole('button', { name: /quick/i }));
       await quickMode.first().click().catch(() => {});
@@ -168,7 +168,7 @@ for (const viewport of VIEWPORTS) {
     });
 
     test(`next button is visible and not clipped`, async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto(`${BASE_URL}/enneagram`);
       const quickMode = page.getByTestId('quick-mode-card')
         .or(page.getByRole('button', { name: /quick/i }));
       await quickMode.first().click().catch(() => {});

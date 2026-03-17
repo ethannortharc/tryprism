@@ -33,7 +33,7 @@ async function injectResult(page: Page): Promise<void> {
 }
 
 async function startQuizPage(page: Page): Promise<void> {
-  await page.goto(BASE_URL);
+  await page.goto(`${BASE_URL}/enneagram`);
   const quickMode = page.getByTestId('quick-mode-card')
     .or(page.getByRole('button', { name: /quick/i }));
   await quickMode.first().click();

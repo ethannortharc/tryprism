@@ -2,12 +2,15 @@
  * localStorage persistence for TryPrism test results.
  *
  * Exports:
- *   saveResult(result)  → void
- *   getResults()        → StoredResult[]
- *   clearResults()      → void
+ *   saveResult(result)      → void
+ *   getResults()            → StoredResult[]
+ *   clearResults()          → void
+ *   saveMbtiResult(result)  → void
+ *   getMbtiResults()        → StoredMbtiResult[]
  */
 
 import type { ScoreResult } from '../types/index';
+import type { StoredMbtiResult } from '../types/mbti';
 
 export interface StoredResult extends ScoreResult {
   id: string;
@@ -91,4 +94,51 @@ export function clearResults(): void {
   } catch {
     // localStorage unavailable — ignore
   }
+}
+
+// ---------------------------------------------------------------------------
+// MBTI result storage
+// ---------------------------------------------------------------------------
+
+const MBTI_STORAGE_KEY = 'tryprism_mbti_results';
+
+/** Safely read and parse MBTI results from localStorage. Returns empty array on any error. */
+function readMbtiFromStorage(): StoredMbtiResult[] {
+  try {
+    if (typeof localStorage === 'undefined') return [];
+    const raw = localStorage.getItem(MBTI_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (item): item is StoredMbtiResult =>
+        item !== null &&
+        typeof item === 'object' &&
+        typeof (item as Record<string, unknown>).type === 'string'
+    );
+  } catch {
+    return [];
+  }
+}
+
+/** Saves an MBTI result to localStorage. Appends to existing results. */
+export function saveMbtiResult(result: StoredMbtiResult): void {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    const existing = readMbtiFromStorage();
+    existing.push(result);
+    localStorage.setItem(MBTI_STORAGE_KEY, JSON.stringify(existing));
+  } catch {
+    // localStorage unavailable or quota exceeded — ignore
+  }
+}
+
+/** Returns all saved MBTI results, most recent first. Returns empty array on any error. */
+export function getMbtiResults(): StoredMbtiResult[] {
+  const results = readMbtiFromStorage();
+  return results.slice().sort((a, b) => {
+    const tA = new Date(a.takenAt).getTime();
+    const tB = new Date(b.takenAt).getTime();
+    return tB - tA;
+  });
 }

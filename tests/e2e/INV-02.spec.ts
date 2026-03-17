@@ -54,7 +54,7 @@ test.describe('INV-02 — Home page initial render', () => {
   });
 
   test('quick mode selection option is present and visible', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto(`${BASE_URL}/enneagram`);
     const quickMode = page.getByTestId('quick-mode-card')
       .or(page.getByRole('button', { name: /quick/i }))
       .or(page.getByText(/quick/i).first());
@@ -62,7 +62,7 @@ test.describe('INV-02 — Home page initial render', () => {
   });
 
   test('full mode selection option is present and visible', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto(`${BASE_URL}/enneagram`);
     const fullMode = page.getByTestId('full-mode-card')
       .or(page.getByRole('button', { name: /full/i }))
       .or(page.getByText(/full/i).first());
@@ -134,7 +134,7 @@ test.describe('INV-02 — No console errors on initial load', () => {
 
 test.describe('INV-02 — Mode selection cards are interactive', () => {
   test('clicking quick mode navigates to quiz or mode-selection page', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto(`${BASE_URL}/enneagram`);
     const quickMode = page.getByTestId('quick-mode-card')
       .or(page.getByRole('button', { name: /quick/i }));
     await quickMode.first().click();
@@ -143,7 +143,8 @@ test.describe('INV-02 — Mode selection cards are interactive', () => {
     });
     // Either URL changed or something on page changed to indicate mode selected
     const currentUrl = page.url();
-    const movedOn = currentUrl !== BASE_URL && currentUrl !== BASE_URL + '/';
+    const enneagramUrl = `${BASE_URL}/enneagram`;
+    const movedOn = currentUrl !== enneagramUrl && currentUrl !== enneagramUrl + '/';
     const quizStarted = await page.getByTestId('question-text').isVisible().catch(() => false);
     expect(movedOn || quizStarted, 'Quick mode click had no effect').toBe(true);
   });

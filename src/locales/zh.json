@@ -114,5 +114,68 @@
     "share": "分享",
     "download": "下载",
     "of": "共"
+  },
+  "mbti": {
+    "title": "MBTI",
+    "subtitle": "迈尔斯-布里格斯类型指标",
+    "tagline": "探索你在四个维度上的认知偏好",
+    "mode": {
+      "selectMode": "选择模式",
+      "quick": "快速模式",
+      "quickDescription": "48道题 · 每个维度12题 · 快速了解你的类型 · 约10分钟",
+      "full": "完整模式",
+      "fullDescription": "96道题 · 每个维度24题 · 最准确的结果 · 约20分钟"
+    },
+    "quiz": {
+      "progress": "第",
+      "of": "题，共"
+    },
+    "results": {
+      "preferenceStrengths": "偏好强度",
+      "cognitiveStack": "认知功能栈",
+      "overview": "概述",
+      "strengths": "优势",
+      "weaknesses": "盲点",
+      "growthAreas": "成长方向",
+      "careerPaths": "职业方向",
+      "communicationStyle": "沟通风格",
+      "slight": "轻微偏好",
+      "moderate": "中等偏好",
+      "clear": "明显偏好",
+      "strong": "强烈偏好"
+    },
+    "groups": {
+      "analyst": "分析家",
+      "diplomat": "外交家",
+      "sentinel": "守卫者",
+      "explorer": "探险家"
+    },
+    "functions": {
+      "Fi": "内倾情感",
+      "Fe": "外倾情感",
+      "Ti": "内倾思维",
+      "Te": "外倾思维",
+      "Si": "内倾感觉",
+      "Se": "外倾感觉",
+      "Ni": "内倾直觉",
+      "Ne": "外倾直觉"
+    },
+    "dichotomies": {
+      "EI": { "name": "精力来源", "E": "外倾", "I": "内倾" },
+      "SN": { "name": "信息获取", "S": "感觉", "N": "直觉" },
+      "TF": { "name": "决策方式", "T": "思维", "F": "情感" },
+      "JP": { "name": "生活方式", "J": "判断", "P": "知觉" }
+    }
+  },
+  "hub": {
+    "chooseTest": "选择测试",
+    "enneagram": {
+      "name": "九型人格",
+      "description": "9种人格类型 · 发现你的核心动机、恐惧和成长路径"
+    },
+    "mbti": {
+      "name": "MBTI",
+      "description": "16种人格类型 · 了解你的认知功能和天然偏好"
+    }
   }
 }

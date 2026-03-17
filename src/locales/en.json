@@ -114,5 +114,68 @@
     "share": "Share",
     "download": "Download",
     "of": "of"
+  },
+  "mbti": {
+    "title": "MBTI",
+    "subtitle": "Myers-Briggs Type Indicator",
+    "tagline": "Explore your cognitive preferences across 4 dimensions",
+    "mode": {
+      "selectMode": "Select Mode",
+      "quick": "Quick",
+      "quickDescription": "48 questions · 12 per dimension · Good overview of your type · ~10 min",
+      "full": "Full",
+      "fullDescription": "96 questions · 24 per dimension · Most accurate results · ~20 min"
+    },
+    "quiz": {
+      "progress": "Question",
+      "of": "of"
+    },
+    "results": {
+      "preferenceStrengths": "Preference Strengths",
+      "cognitiveStack": "Cognitive Function Stack",
+      "overview": "Overview",
+      "strengths": "Strengths",
+      "weaknesses": "Blind Spots",
+      "growthAreas": "Growth Areas",
+      "careerPaths": "Career Paths",
+      "communicationStyle": "Communication Style",
+      "slight": "Slight preference",
+      "moderate": "Moderate preference",
+      "clear": "Clear preference",
+      "strong": "Strong preference"
+    },
+    "groups": {
+      "analyst": "Analyst",
+      "diplomat": "Diplomat",
+      "sentinel": "Sentinel",
+      "explorer": "Explorer"
+    },
+    "functions": {
+      "Fi": "Introverted Feeling",
+      "Fe": "Extraverted Feeling",
+      "Ti": "Introverted Thinking",
+      "Te": "Extraverted Thinking",
+      "Si": "Introverted Sensing",
+      "Se": "Extraverted Sensing",
+      "Ni": "Introverted Intuition",
+      "Ne": "Extraverted Intuition"
+    },
+    "dichotomies": {
+      "EI": { "name": "Energy", "E": "Extraversion", "I": "Introversion" },
+      "SN": { "name": "Information", "S": "Sensing", "N": "Intuition" },
+      "TF": { "name": "Decisions", "T": "Thinking", "F": "Feeling" },
+      "JP": { "name": "Lifestyle", "J": "Judging", "P": "Perceiving" }
+    }
+  },
+  "hub": {
+    "chooseTest": "Choose a test",
+    "enneagram": {
+      "name": "Enneagram",
+      "description": "9 personality types · Discover your core motivations, fears, and growth path"
+    },
+    "mbti": {
+      "name": "MBTI",
+      "description": "16 personality types · Understand your cognitive functions and natural preferences"
+    }
   }
 }

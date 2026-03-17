@@ -54,6 +54,7 @@ async function getAnyStoredResult(page: Page): Promise<string | null> {
 }
 
 async function startQuickMode(page: Page): Promise<void> {
+  await page.goto(`${BASE_URL}/enneagram`);
   const quickMode = page.getByTestId('quick-mode-card')
     .or(page.getByRole('button', { name: /quick/i }));
   await quickMode.first().click();
