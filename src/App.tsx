@@ -9,6 +9,9 @@ import History from './pages/History';
 import MbtiHome from './pages/mbti/MbtiHome';
 import MbtiQuiz from './pages/mbti/MbtiQuiz';
 import MbtiResults from './pages/mbti/MbtiResults';
+import BigFiveHome from './pages/bigfive/BigFiveHome';
+import BigFiveQuiz from './pages/bigfive/BigFiveQuiz';
+import BigFiveResults from './pages/bigfive/BigFiveResults';
 
 const router = createBrowserRouter([
   { path: '/', element: <Hub /> },
@@ -18,6 +21,9 @@ const router = createBrowserRouter([
   { path: '/mbti', element: <MbtiHome /> },
   { path: '/mbti/quiz', element: <MbtiQuiz /> },
   { path: '/mbti/results', element: <MbtiResults /> },
+  { path: '/bigfive', element: <BigFiveHome /> },
+  { path: '/bigfive/quiz', element: <BigFiveQuiz /> },
+  { path: '/bigfive/results', element: <BigFiveResults /> },
   { path: '/history', element: <History /> },
 ]);
 

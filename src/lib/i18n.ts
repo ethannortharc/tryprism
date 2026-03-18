@@ -22,7 +22,7 @@ const locales: Record<Locale, Record<string, unknown>> = {
 // ---------------------------------------------------------------------------
 // Internal state — mutable locale
 // ---------------------------------------------------------------------------
-let currentLocale: Locale = 'zh'; // default to Chinese
+let currentLocale: Locale = 'en'; // default to English
 
 // Attempt to restore persisted preference on module load.
 // Guard for SSR / test environments where localStorage may not exist.

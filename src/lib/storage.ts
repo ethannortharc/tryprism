@@ -11,6 +11,7 @@
 
 import type { ScoreResult } from '../types/index';
 import type { StoredMbtiResult } from '../types/mbti';
+import type { StoredBigFiveResult } from '../types/bigfive';
 
 export interface StoredResult extends ScoreResult {
   id: string;
@@ -136,6 +137,54 @@ export function saveMbtiResult(result: StoredMbtiResult): void {
 /** Returns all saved MBTI results, most recent first. Returns empty array on any error. */
 export function getMbtiResults(): StoredMbtiResult[] {
   const results = readMbtiFromStorage();
+  return results.slice().sort((a, b) => {
+    const tA = new Date(a.takenAt).getTime();
+    const tB = new Date(b.takenAt).getTime();
+    return tB - tA;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Big Five result storage
+// ---------------------------------------------------------------------------
+
+const BIGFIVE_STORAGE_KEY = 'tryprism_bigfive_results';
+
+/** Safely read and parse Big Five results from localStorage. Returns empty array on any error. */
+function readBigFiveFromStorage(): StoredBigFiveResult[] {
+  try {
+    if (typeof localStorage === 'undefined') return [];
+    const raw = localStorage.getItem(BIGFIVE_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (item): item is StoredBigFiveResult =>
+        item !== null &&
+        typeof item === 'object' &&
+        typeof (item as Record<string, unknown>).id === 'string' &&
+        typeof (item as Record<string, unknown>).factors === 'object'
+    );
+  } catch {
+    return [];
+  }
+}
+
+/** Saves a Big Five result to localStorage. Appends to existing results. */
+export function saveBigFiveResult(result: StoredBigFiveResult): void {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    const existing = readBigFiveFromStorage();
+    existing.push(result);
+    localStorage.setItem(BIGFIVE_STORAGE_KEY, JSON.stringify(existing));
+  } catch {
+    // localStorage unavailable or quota exceeded — ignore
+  }
+}
+
+/** Returns all saved Big Five results, most recent first. Returns empty array on any error. */
+export function getBigFiveResults(): StoredBigFiveResult[] {
+  const results = readBigFiveFromStorage();
   return results.slice().sort((a, b) => {
     const tA = new Date(a.takenAt).getTime();
     const tB = new Date(b.takenAt).getTime();

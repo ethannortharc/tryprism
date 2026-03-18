@@ -160,11 +160,13 @@ export default function Results() {
       style={{
         padding: 'var(--space-8) var(--space-6)',
         minHeight: '100vh',
+        width: '100%',
         maxWidth: '800px',
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--space-8)',
+        overflow: 'hidden',
       }}
     >
       <HeaderControls />
@@ -305,12 +307,22 @@ export default function Results() {
                     justifyContent: 'space-between',
                     fontSize: '0.75rem',
                     color: 'var(--text-muted)',
+                    minWidth: 0,
+                    overflow: 'hidden',
                   }}
                 >
-                  <span style={{ color: `var(--type-${typeNum})`, fontWeight: '600' }}>
+                  <span style={{
+                    color: `var(--type-${typeNum})`,
+                    fontWeight: '600',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    minWidth: 0,
+                    flexShrink: 1,
+                  }}>
                     {t(`types.${typeNum}.name`)}
                   </span>
-                  <span>{score.toFixed(1)}</span>
+                  <span style={{ flexShrink: 0, paddingLeft: '4px' }}>{score.toFixed(1)}</span>
                 </div>
                 <div
                   style={{

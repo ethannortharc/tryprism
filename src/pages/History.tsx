@@ -11,10 +11,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
-import { getResults, clearResults, type StoredResult } from '../lib/storage';
-import { getMbtiResults } from '../lib/storage';
+import { getResults, clearResults, type StoredResult, getMbtiResults, getBigFiveResults } from '../lib/storage';
 import type { StoredMbtiResult } from '../types/mbti';
+import type { StoredBigFiveResult, BigFiveFactor } from '../types/bigfive';
 import { mbtiTypeDescriptions } from '../data/mbti/typeDescriptions';
+import { FACTOR_ORDER } from '../data/bigfive/facets';
 
 const TYPE_NAMES_EN: Record<number, string> = {
   1: 'The Reformer',
@@ -58,7 +59,8 @@ function formatDate(iso: string, locale: string): string {
 /** Combined history entry discriminated union */
 type HistoryEntry =
   | { kind: 'enneagram'; data: StoredResult; takenAt: Date }
-  | { kind: 'mbti'; data: StoredMbtiResult & { completedAt?: string }; takenAt: Date };
+  | { kind: 'mbti'; data: StoredMbtiResult & { completedAt?: string }; takenAt: Date }
+  | { kind: 'bigfive'; data: StoredBigFiveResult; takenAt: Date };
 
 export default function History() {
   const navigate = useNavigate();
@@ -71,6 +73,7 @@ export default function History() {
     const enneagramResults = getResults();
     // getMbtiResults returns StoredMbtiResult[] but stored data may use completedAt
     const mbtiResults = getMbtiResults() as Array<StoredMbtiResult & { completedAt?: string }>;
+    const bigfiveResults = getBigFiveResults();
 
     const combined: HistoryEntry[] = [
       ...enneagramResults.map((r): HistoryEntry => ({
@@ -83,6 +86,11 @@ export default function History() {
         data: r,
         takenAt: new Date(r.takenAt ?? (r as { completedAt?: string }).completedAt ?? 0),
       })),
+      ...bigfiveResults.map((r): HistoryEntry => ({
+        kind: 'bigfive',
+        data: r,
+        takenAt: new Date(r.takenAt),
+      })),
     ];
 
     // Sort descending by date (most recent first)
@@ -92,15 +100,21 @@ export default function History() {
 
   const handleClear = () => {
     clearResults();
-    // Also clear MBTI results
+    // Also clear MBTI and Big Five results
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.removeItem('tryprism_mbti_results');
+        localStorage.removeItem('tryprism_bigfive_results');
+        localStorage.removeItem('tryprism_bigfive_latest');
       }
     } catch {
       // ignore
     }
     setEntries([]);
+  };
+
+  const handleBigFiveClick = (entry: StoredBigFiveResult) => {
+    navigate('/bigfive/results', { state: entry });
   };
 
   const handleEnneagramClick = (entry: StoredResult) => {
@@ -319,6 +333,7 @@ export default function History() {
             }
 
             // MBTI entry
+            if (entry.kind === 'mbti') {
             const m = entry.data;
             const mbtiType = m.type;
             const typeDesc = mbtiTypeDescriptions[mbtiType];
@@ -446,7 +461,136 @@ export default function History() {
                 </div>
               </button>
             );
-          })}
+          }
+
+          // Big Five entry
+          if (entry.kind !== 'bigfive') return null;
+          const bf = entry.data;
+          const bfDateStr = bf.takenAt ? formatDate(bf.takenAt, locale) : '';
+          const bfModeLabel = bf.mode === 'quick'
+            ? t('history.quickMode')
+            : t('history.fullMode');
+
+          // Build factor summary: "O: High · C: Avg · E: Low · A: High · N: Avg"
+          const factorSummary = FACTOR_ORDER.map((f: BigFiveFactor) => {
+            const score = bf.factors[f];
+            if (!score) return null;
+            const bandKey = score.band;
+            const bandShort = bandKey === 'high' ? (locale === 'zh' ? '高' : 'Hi')
+              : bandKey === 'low' ? (locale === 'zh' ? '低' : 'Lo')
+              : (locale === 'zh' ? '中' : 'Avg');
+            return `${f}: ${bandShort}`;
+          }).filter(Boolean).join(' · ');
+
+          return (
+            <button
+              key={bf.id ?? `bigfive-${idx}`}
+              data-testid="bigfive-history-item"
+              className="history-item result-list-item"
+              onClick={() => handleBigFiveClick(bf)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--space-4)',
+                padding: 'var(--space-4) var(--space-5)',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-lg)',
+                cursor: 'pointer',
+                textAlign: 'left',
+                width: '100%',
+                transition: 'border-color 0.15s',
+              }}
+            >
+              {/* OCEAN badge */}
+              <div
+                style={{
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'color-mix(in srgb, var(--bigfive-primary) 15%, transparent)',
+                  border: '2px solid var(--bigfive-primary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.75rem',
+                  fontWeight: '800',
+                  color: 'var(--bigfive-primary)',
+                  flexShrink: 0,
+                  letterSpacing: '0.04em',
+                }}
+              >
+                B5
+              </div>
+
+              {/* Entry details */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Test type label */}
+                <div
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: '600',
+                    color: 'var(--text-muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.06em',
+                    marginBottom: '2px',
+                  }}
+                >
+                  {locale === 'zh' ? '大五人格' : 'Big Five'}
+                </div>
+                <div
+                  style={{
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    color: 'var(--text-primary)',
+                    marginBottom: 'var(--space-1)',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {factorSummary}
+                </div>
+                <div
+                  style={{
+                    fontSize: '0.8rem',
+                    color: 'var(--text-muted)',
+                    display: 'flex',
+                    gap: 'var(--space-3)',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {bfDateStr && (
+                    <span>
+                      {t('history.takenOn')}: {bfDateStr}
+                    </span>
+                  )}
+                  <span
+                    style={{
+                      padding: '1px 6px',
+                      borderRadius: '4px',
+                      background: 'var(--bg-elevated)',
+                      border: '1px solid var(--border-subtle)',
+                    }}
+                  >
+                    {bfModeLabel}
+                  </span>
+                </div>
+              </div>
+
+              {/* Chevron */}
+              <div
+                style={{
+                  color: 'var(--text-muted)',
+                  fontSize: '1.1rem',
+                  flexShrink: 0,
+                }}
+              >
+                →
+              </div>
+            </button>
+          );
+        })}
         </div>
       )}
     </main>

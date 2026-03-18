@@ -12,6 +12,7 @@
   },
   "buttons": {
     "start": "Start",
+    "finish": "Finish",
     "next": "Next",
     "back": "Back",
     "retake": "Retake",
@@ -176,6 +177,118 @@
     "mbti": {
       "name": "MBTI",
       "description": "16 personality types · Understand your cognitive functions and natural preferences"
+    },
+    "bigfive": {
+      "name": "Big Five / OCEAN",
+      "description": "5 personality dimensions · Science-backed model used globally in research and psychology"
+    }
+  },
+  "bigfive": {
+    "title": "Big Five / OCEAN",
+    "tagline": "The world's most validated personality model",
+    "description": "Measure five core personality dimensions: Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism.",
+    "modes": {
+      "quick": {
+        "title": "Quick",
+        "description": "50 questions · ~5 minutes · Factor-level scores",
+        "badge": "IPIP-50",
+        "questions": "50 questions",
+        "time": "~5 minutes"
+      },
+      "full": {
+        "title": "Full",
+        "description": "120 questions · ~15 minutes · 30 facet scores",
+        "badge": "IPIP-NEO-120",
+        "questions": "120 questions",
+        "time": "~15 minutes"
+      }
+    },
+    "factors": {
+      "openness": {
+        "name": "Openness to Experience",
+        "high": "You tend to be intellectually curious, imaginative, and drawn to aesthetic and novel experiences. You are comfortable with complexity and ambiguity, and you actively seek out new ideas, perspectives, and creative pursuits.",
+        "average": "You balance openness to new ideas with appreciation for the familiar and practical. You engage with novel experiences selectively — curious when motivated, but also comfortable with routine and convention.",
+        "low": "You tend to prefer the familiar, practical, and concrete over novelty and abstraction. You are grounded in conventional approaches and may find rapid change or highly abstract ideas less appealing than proven methods."
+      },
+      "conscientiousness": {
+        "name": "Conscientiousness",
+        "high": "You tend to be organized, deliberate, and persistent in pursuing your goals. You exercise strong self-discipline, plan ahead, and follow through on commitments — though at times this drive for order can make flexibility feel uncomfortable.",
+        "average": "You show a reasonable level of self-discipline and organization while retaining flexibility. You can focus and follow through when it matters, but you don't feel compelled to plan or structure every aspect of your life.",
+        "low": "You tend to approach life with flexibility and spontaneity rather than rigid planning. You may find detailed organization or strict schedules constraining, and you often prefer to respond to situations as they arise rather than anticipate them."
+      },
+      "extraversion": {
+        "name": "Extraversion",
+        "high": "You tend to be energized by social interaction and seek out stimulating, active environments. You are typically assertive, enthusiastic, and experience positive emotions readily — though you may underestimate the value of solitude.",
+        "average": "You are comfortable in social settings but also appreciate time alone. You can be energized by interaction and enjoy socializing, yet you do not find solitude draining and do not need constant social engagement.",
+        "low": "You tend to be reserved and reflective, preferring quieter environments with fewer social demands. This reflects a need for less external stimulation, not shyness or discomfort — you often think deeply before speaking and enjoy focused, low-key activities."
+      },
+      "agreeableness": {
+        "name": "Agreeableness",
+        "high": "You tend to be cooperative, empathic, and motivated to maintain harmonious relationships. You give others the benefit of the doubt and prioritize their needs, though this can sometimes come at the cost of asserting your own interests.",
+        "average": "You balance concern for others with attention to your own interests and opinions. You are generally cooperative and considerate, but you can be direct and assertive when necessary and are not easily manipulated.",
+        "low": "You tend to be analytical, skeptical, and willing to compete or challenge others when you believe it is warranted. You prioritize honesty and self-interest over social harmony, which can make you effective in negotiation but sometimes difficult in close relationships."
+      },
+      "neuroticism": {
+        "name": "Neuroticism",
+        "high": "You tend to experience negative emotions — such as anxiety, frustration, or self-doubt — more intensely and more frequently than average. These reactions can be a source of empathy and sensitivity, but may also make it harder to stay calm under pressure.",
+        "average": "You experience a normal range of emotional ups and downs. You are not unusually prone to stress or negative affect, but you are not emotionally flat either — you respond to difficulties with appropriate concern and recover in a reasonable time.",
+        "low": "You tend to be emotionally stable, calm, and resilient. You rarely feel overwhelmed by stress and typically maintain composure in difficult situations. This does not mean you lack emotion — rather, you experience and regulate emotions with relative ease."
+      }
+    },
+    "facets": {
+      "n1": { "name": "Anxiety" },
+      "n2": { "name": "Anger" },
+      "n3": { "name": "Depression" },
+      "n4": { "name": "Self-Consciousness" },
+      "n5": { "name": "Immoderation" },
+      "n6": { "name": "Vulnerability" },
+      "e1": { "name": "Friendliness" },
+      "e2": { "name": "Gregariousness" },
+      "e3": { "name": "Assertiveness" },
+      "e4": { "name": "Activity Level" },
+      "e5": { "name": "Excitement-Seeking" },
+      "e6": { "name": "Cheerfulness" },
+      "o1": { "name": "Imagination" },
+      "o2": { "name": "Artistic Interests" },
+      "o3": { "name": "Emotionality" },
+      "o4": { "name": "Adventurousness" },
+      "o5": { "name": "Intellect" },
+      "o6": { "name": "Liberalism" },
+      "a1": { "name": "Trust" },
+      "a2": { "name": "Morality" },
+      "a3": { "name": "Altruism" },
+      "a4": { "name": "Cooperation" },
+      "a5": { "name": "Modesty" },
+      "a6": { "name": "Sympathy" },
+      "c1": { "name": "Self-Efficacy" },
+      "c2": { "name": "Orderliness" },
+      "c3": { "name": "Dutifulness" },
+      "c4": { "name": "Achievement-Striving" },
+      "c5": { "name": "Self-Discipline" },
+      "c6": { "name": "Cautiousness" }
+    },
+    "bands": {
+      "low": "Low",
+      "average": "Average",
+      "high": "High"
+    },
+    "likert": {
+      "1": "Very Inaccurate",
+      "2": "Moderately Inaccurate",
+      "3": "Neither Accurate Nor Inaccurate",
+      "4": "Moderately Accurate",
+      "5": "Very Accurate"
+    },
+    "quiz": {
+      "progress": "Question {current} of {total}"
+    },
+    "results": {
+      "title": "Your Big Five Results",
+      "subtitle": "Based on the OCEAN personality model",
+      "factors": "Factor Scores",
+      "facets": "Facet Detail",
+      "exportPdf": "Export PDF",
+      "retake": "Take Again"
     }
   }
 }

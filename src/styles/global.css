@@ -23,6 +23,14 @@
   --mbti-sentinel: #4a9ee8;   /* SJ — blue    */
   --mbti-explorer: #e8b45c;   /* SP — amber   */
 
+  /* Big Five OCEAN factor colors */
+  --bigfive-o: #b07ee8;        /* Openness — violet */
+  --bigfive-c: #4a9ee8;        /* Conscientiousness — blue */
+  --bigfive-e: #e8a45c;        /* Extraversion — amber */
+  --bigfive-a: #5ec8a0;        /* Agreeableness — teal */
+  --bigfive-n: #e86c8a;        /* Neuroticism — rose */
+  --bigfive-primary: #5eaae8;  /* Primary accent — sky blue */
+
   /* MBTI dichotomy pole colors */
   --pole-e: #e8845c; --pole-i: #7e8be8;
   --pole-s: #e8b45c; --pole-n: #9e7ee8;
@@ -328,6 +336,12 @@ button:active:not(:disabled) {
   background: var(--bg-elevated);
   border-color: var(--border-strong);
   color: var(--text-primary);
+}
+
+/* ---- Custom Likert radio option focus styles ---- */
+.likert-option:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 /* ---- PDF Capture Mode ---- */

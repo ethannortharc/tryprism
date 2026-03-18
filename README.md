@@ -1,19 +1,31 @@
 # TryPrism
 
-A bilingual personality test web app supporting **Enneagram** and **MBTI** assessments. Built with React + TypeScript, featuring dark/light themes, PDF export, and full Chinese/English language support.
+A bilingual personality test platform supporting **Enneagram**, **MBTI**, and **Big Five / OCEAN** assessments. Built with React + TypeScript, featuring dark/light themes, PDF export, and full Chinese/English language support.
 
 ![TryPrism Hub](screenshots/hub.png)
 
 ## Features
 
-- **Two personality frameworks** — Enneagram (9 types) and MBTI (16 types)
+- **Three personality frameworks** — Enneagram (9 types), MBTI (16 types), and Big Five / OCEAN (5 factors + 30 facets)
 - **Quick & Full modes** — shorter assessments for quick results, or comprehensive tests for detailed insights
 - **Bilingual** — complete Chinese and English support, switchable anytime
 - **Dark/Light themes** — premium calm aesthetic with prismatic accent colors
-- **Detailed results** — type descriptions, cognitive function stacks (MBTI), growth/stress arrows (Enneagram), career paths, and more
+- **Detailed results** — type descriptions, cognitive function stacks (MBTI), growth/stress arrows (Enneagram), factor/facet breakdowns (Big Five), and more
 - **PDF export** — save your results as a beautifully formatted PDF document
-- **History** — revisit past test results from both frameworks
+- **History** — revisit past test results from all three frameworks
 - **Fully static** — no backend, no database, no tracking. Your data stays in your browser.
+
+### Big Five / OCEAN Results
+
+![Big Five Results](screenshots/bigfive-results.png)
+
+The Big Five results page includes:
+- 5 OCEAN factor scores (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism) with horizontal bars and Low/Average/High band labels
+- Personalized descriptions for each factor based on your score band
+- **Full mode (IPIP-NEO-120)**: 30 facet-level scores (6 per factor) in collapsible sections
+- **Quick mode (IPIP-50)**: 5 factor scores for a faster assessment
+
+![Big Five Results — Chinese](screenshots/bigfive-results-zh.png)
 
 ### MBTI Results
 
@@ -63,6 +75,7 @@ Ratchet transforms high-level intent ("add MBTI personality test") into a struct
 
 - **Enneagram test** — the initial personality test was built entirely by Ratchet in one autonomous session. Only one manual fix was needed afterward: a PDF export issue with CJK font rendering.
 - **MBTI test** — successfully implemented in a single Ratchet session with zero manual fixes. The autonomous pipeline (spec → environment prep → test generation → planning → execution → verification) delivered all 8 work packages, passing 134 unit tests and 117 E2E tests on completion.
+- **Big Five / OCEAN test** — added using the IPIP-50 (quick) and IPIP-NEO-120 (full) public domain instruments. 5 work packages, 201 unit tests and 217 E2E tests. Includes 170 bilingual question items (50 + 120), 30 facet-level scoring, and psychometrically accurate descriptions.
 
 ## License
 

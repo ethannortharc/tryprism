@@ -14,6 +14,10 @@ export default function Hub() {
     navigate('/mbti');
   };
 
+  const handleBigFive = () => {
+    navigate('/bigfive');
+  };
+
   return (
     <main
       className="page-enter"
@@ -90,7 +94,7 @@ export default function Hub() {
 
         {/* Enneagram card */}
         <button
-          data-testid="hub-enneagram-card"
+          data-testid="enneagram-card"
           className="mode-card"
           onClick={handleEnneagram}
         >
@@ -135,7 +139,7 @@ export default function Hub() {
 
         {/* MBTI card */}
         <button
-          data-testid="hub-mbti-card"
+          data-testid="mbti-card"
           className="mode-card"
           onClick={handleMbti}
         >
@@ -176,6 +180,54 @@ export default function Hub() {
               </div>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
                 {t('hub.mbti.description')}
+              </p>
+            </div>
+          </div>
+        </button>
+
+        {/* Big Five / OCEAN card */}
+        <button
+          className="mode-card"
+          onClick={handleBigFive}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-4)' }}>
+            {/* Icon */}
+            <div
+              aria-hidden="true"
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: 'var(--radius-md)',
+                background: 'linear-gradient(135deg, #b07ee8 0%, #4a9ee8 33%, #e8a45c 66%, #5ec8a0 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                color: '#fff',
+                flexShrink: 0,
+                letterSpacing: '0.04em',
+              }}
+            >
+              B5
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <div
+                data-testid="bigfive-card"
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: 'var(--text-primary)',
+                  marginBottom: 'var(--space-2)',
+                }}
+              >
+                {t('hub.bigfive.name')}
+              </div>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
+                {t('hub.bigfive.description')}
               </p>
             </div>
           </div>
