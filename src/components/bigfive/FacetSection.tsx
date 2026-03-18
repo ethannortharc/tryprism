@@ -9,6 +9,14 @@
 
 import { useState } from 'react';
 
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 export interface FacetEntry {
   code: string;
   name: string;
@@ -109,8 +117,8 @@ export default function FacetSection({ title, facets, color }: FacetSectionProps
                         color: color,
                         padding: '1px 6px',
                         borderRadius: '8px',
-                        background: `color-mix(in srgb, ${color} 12%, transparent)`,
-                        border: `1px solid color-mix(in srgb, ${color} 28%, transparent)`,
+                        background: hexToRgba(color, 0.12),
+                        border: `1px solid ${hexToRgba(color, 0.28)}`,
                         textTransform: 'uppercase',
                         letterSpacing: '0.04em',
                         fontWeight: 600,

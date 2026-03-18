@@ -149,9 +149,9 @@ export default function BigFiveResults() {
           textAlign: 'center',
           padding: 'var(--space-8)',
           background: 'var(--bg-card)',
-          border: '1px solid color-mix(in srgb, var(--bigfive-primary) 40%, transparent)',
+          border: '1px solid rgba(94, 170, 232, 0.4)',
           borderRadius: 'var(--radius-xl)',
-          boxShadow: '0 0 40px color-mix(in srgb, var(--bigfive-primary) 10%, transparent)',
+          boxShadow: '0 0 40px rgba(94, 170, 232, 0.1)',
         }}
       >
         <h1
@@ -180,8 +180,8 @@ export default function BigFiveResults() {
           style={{
             display: 'inline-block',
             padding: 'var(--space-2) var(--space-4)',
-            background: 'color-mix(in srgb, var(--bigfive-primary) 12%, transparent)',
-            border: '1px solid color-mix(in srgb, var(--bigfive-primary) 30%, transparent)',
+            background: 'rgba(94, 170, 232, 0.12)',
+            border: '1px solid rgba(94, 170, 232, 0.3)',
             borderRadius: 'var(--radius-md)',
             fontSize: '0.85rem',
             fontWeight: 600,

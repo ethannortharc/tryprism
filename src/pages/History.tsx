@@ -508,7 +508,7 @@ export default function History() {
                   width: '52px',
                   height: '52px',
                   borderRadius: 'var(--radius-md)',
-                  background: 'color-mix(in srgb, var(--bigfive-primary) 15%, transparent)',
+                  background: 'rgba(94, 170, 232, 0.15)',
                   border: '2px solid var(--bigfive-primary)',
                   display: 'flex',
                   alignItems: 'center',

@@ -144,8 +144,8 @@ export default function BigFiveHome() {
               aria-hidden="true"
               style={{
                 padding: 'var(--space-1) var(--space-3)',
-                background: 'color-mix(in srgb, var(--bigfive-primary) 15%, transparent)',
-                border: '1px solid color-mix(in srgb, var(--bigfive-primary) 35%, transparent)',
+                background: 'rgba(94, 170, 232, 0.15)',
+                border: '1px solid rgba(94, 170, 232, 0.35)',
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '0.75rem',
                 fontWeight: 700,
@@ -196,8 +196,8 @@ export default function BigFiveHome() {
               aria-hidden="true"
               style={{
                 padding: 'var(--space-1) var(--space-3)',
-                background: 'color-mix(in srgb, var(--bigfive-primary) 15%, transparent)',
-                border: '1px solid color-mix(in srgb, var(--bigfive-primary) 35%, transparent)',
+                background: 'rgba(94, 170, 232, 0.15)',
+                border: '1px solid rgba(94, 170, 232, 0.35)',
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '0.75rem',
                 fontWeight: 700,
